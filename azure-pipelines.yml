@@ -13,11 +13,11 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    ConnectedServiceName: '[EnterYourServiceConnectionName]'
-    subscriptionName: '[EnterTheTargetSubscriptionID]'
+    ConnectedServiceName: 'AzureRmPipeline-conn'
+    subscriptionName: 'Pay-As-You-Go'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: '[EnterANewResourceGroupName]'
-    location: 'Central US'
+    resourceGroupName: 'gluu-cc-rg'
+    location: 'Canada Central'
     templateLocation: 'Linked artifact'
     csmFile: 'CreateAzureStorage/azuredeploy.json'
     deploymentMode: 'Incremental'
