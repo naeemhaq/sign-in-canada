@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccounts_gluuccrgdiag_name": {
+            "value": null
+        },
+        "virtualNetworks_gluu_cc_rg_vnet_name": {
+            "value": null
+        },
+        "virtualMachines_gluuserver_cc_01_name": {
+            "value": null
+        },
+        "networkInterfaces_gluuserver_cc_01747_name": {
+            "value": null
+        },
+        "publicIPAddresses_gluuserver_cc_01_ip_name": {
+            "value": null
+        },
+        "networkSecurityGroups_gluuserver_cc_01_nsg_name": {
+            "value": null
+        }
+    }
+}
