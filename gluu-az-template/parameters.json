@@ -1,24 +1,27 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "storageAccounts_gluuccrgdiag_name": {
-          "value": "gluuccrgdiag"
-        },
-        "virtualNetworks_gluu_cc_rg_vnet_name": {
-          "value": "gluu-cc-rg-vnet"
-        },
-        "virtualMachines_gluuserver_cc_01_name": {
-          "value": "gluuserver-cc--01"
-        },
-        "networkInterfaces_gluuserver_cc_01747_name": {
-          "value": "gluuserver-cc-01741"
-        },
-        "publicIPAddresses_gluuserver_cc_01_ip_name": {
-          "value": "gluuserver-cc-01-ip"
-        },
-        "networkSecurityGroups_gluuserver_cc_01_nsg_name": {
-          "value": "gluuserver-cc-01-nsg"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccounts_gluuccrgdiag_name": {
+      "value": "gluuccrgdiag"
+    },
+    "virtualNetworks_gluu_cc_rg_vnet_name": {
+      "value": "gluu-cc-rg-vnet"
+    },
+    "virtualMachines_gluuserver_cc_01_name": {
+      "value": "gluuserver-cc--01"
+    },
+    "networkInterfaces_gluuserver_cc_01747_name": {
+      "value": "gluuserver-cc-01741"
+    },
+    "publicIPAddresses_gluuserver_cc_01_ip_name": {
+      "value": "gluuserver-cc-01-ip"
+    },
+    "networkSecurityGroups_gluuserver_cc_01_nsg_name": {
+      "value": "gluuserver-cc-01-nsg"
+    },
+    "adminPassword": {
+      "value": "Apple1995!Apple1995!"
     }
+  }
 }
