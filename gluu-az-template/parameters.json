@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "GEN-UNIQUE"
+      "value": "naeemu"
     },
     "adminPasswordOrKey": {
-      "value": "GEN-SSH-PUB-KEY"
+      "value": "Apple1995!Apple1995!"
     },
     "dnsLabelPrefix": {
-      "value": ""
+      "value": "naeemu"
     }
   }
 }
