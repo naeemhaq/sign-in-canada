@@ -19,19 +19,3 @@ steps:
     csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/parameters.json'
     deploymentMode: 'Complete'
     deploymentName: 'pipeline-deployment'
-  
-- task: CmdLine@2
-  inputs:
-    script: |
-      sudo bash
-      apt-get install unzip
-      echo downloading shib repo contents
-      wget https://github.com/sign-in-canada/shib-oxauth-authn3/archive/master.zip
-      echo finished downloading
-      echo unziping shib-oxauth-authn3
-      unzip master.zip -d shib-oxauth
-      rm master.zip
-      echo downloading gluu-passport
-      wget https://github.com/sign-in-canada/gluu-passport/archive/master.zip
-      echo finished downloading
-      unzip master.zip -d gluu-passport
