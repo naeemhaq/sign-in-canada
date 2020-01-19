@@ -251,9 +251,7 @@
                         "osType": "Linux",
                         "name": "[concat(parameters('virtualMachines_gluuserver_cc_01_name'), '_OsDisk')]",
                         "createOption": "FromImage",
-                        "caching": "ReadWrite",
-                      "managedDisk": {
-                        "storageAccountType": "Standard_LRS"
+                        "caching": "ReadWrite"
                       }
                     },
                     "dataDisks": []
