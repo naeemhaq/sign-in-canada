@@ -1,23 +1,37 @@
 # Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
+trigger: 
 - master
-
-pool:
+ 
+pool: 
   vmImage: 'ubuntu-latest'
 
 steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
-    deploymentScope: 'Subscription'
-    ConnectedServiceName: 'AzureRmPipeline-gluu'
-    subscriptionName: 'Pay-As-You-Go'
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'AureRmPipeline-gluu'
+    subscriptionId: '8b8dd0e3-8cff-4141-8422-47d2d8c78cb7'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'gluu-cc-rg'
     location: 'Canada Central'
-    templateLocation: 'Linked artifact'
-    csmFile: 'CreateAzureStorage/azuredeploy.json'
-    deploymentMode: 'Incremental'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/parameters.json'
+    deploymentMode: 'Complete'
+    deploymentName: 'pipeline-deployment'
+  
+- task: CmdLine@2
+  inputs:
+    script: |
+      sudo bash
+      apt-get install unzip
+      echo downloading shib repo contents
+      wget https://github.com/sign-in-canada/shib-oxauth-authn3/archive/master.zip
+      echo finished downloading
+      echo unziping shib-oxauth-authn3
+      unzip master.zip -d shib-oxauth
+      rm master.zip
+      echo downloading gluu-passport
+      wget https://github.com/sign-in-canada/gluu-passport/archive/master.zip
+      echo finished downloading
+      unzip master.zip -d gluu-passport
