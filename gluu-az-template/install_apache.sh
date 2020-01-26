@@ -1,4 +1,9 @@
 #!/bin/bash
+
+
+echo "deb https://repo.gluu.org/ubuntu/ bionic main" > /etc/apt/sources.list.d/gluu-repo.list
+curl https://repo.gluu.org/ubuntu/gluu-apt.key | apt-key add -
+
 apt-get -y update
 
 # install Apache2
@@ -22,3 +27,10 @@ echo downloading gluu-passport
 wget https://github.com/sign-in-canada/gluu-passport/archive/master.zip
 echo finished downloading
 unzip master.zip
+
+# isntall gluu server 
+apt-get install gluu-server
+
+/sbin/gluu-serverd enable
+/sbin/gluu-serverd start
+
