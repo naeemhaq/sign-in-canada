@@ -1,84 +1,91 @@
 {
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "type": "string"
-        },
-        "networkInterfaceName": {
-            "type": "string"
-        },
-        "networkSecurityGroupName": {
-            "type": "string"
-        },
-        "networkSecurityGroupRules": {
-            "type": "array"
-        },
-        "subnetName": {
-            "type": "string"
-        },
-        "virtualNetworkId": {
-            "type": "string"
-        },
-        "publicIpAddressName": {
-            "type": "string"
-        },
-        "publicIpAddressType": {
-            "type": "string"
-        },
-        "publicIpAddressSku": {
-            "type": "string"
-        },
-        "virtualMachineName": {
-            "type": "string"
-        },
-		"dnsLabelPrefix": {
-			"type": "string",
-			"defaultValue": "gluuserver-cc-01",
-			"metadata": {
-				"description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
-			}
-		},
-        "virtualMachineRG": {
-            "type": "string"
-        },
-        "osDiskType": {
-            "type": "string"
-        },
-        "virtualMachineSize": {
-            "type": "string"
-        },
-        "adminUsername": {
-            "type": "string"
-        },
-        "adminPassword": {
-            "type": "secureString"
-        },
-        "diagnosticsStorageAccountName": {
-            "type": "string"
-        },
-        "diagnosticsStorageAccountId": {
-            "type": "string"
-        },
-        "autoShutdownStatus": {
-            "type": "string"
-        },
-        "autoShutdownTime": {
-            "type": "string"
-        },
-        "autoShutdownTimeZone": {
-            "type": "string"
-        },
-        "autoShutdownNotificationStatus": {
-            "type": "string"
-        },
-        "autoShutdownNotificationLocale": {
-            "type": "string"
-        },
-        "autoShutdownNotificationEmail": {
-            "type": "string"
-        }
+  "parameters": {
+    "_artifactsLocation": {
+      "defaultValue": "https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/install_apache.sh",
+      "metadata": {
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      },
+      "type": "string"
     },
+    "adminPassword": {
+      "type": "secureString"
+    },
+    "adminUsername": {
+      "type": "string"
+    },
+    "autoShutdownNotificationEmail": {
+      "type": "string"
+    },
+    "autoShutdownNotificationLocale": {
+      "type": "string"
+    },
+    "autoShutdownNotificationStatus": {
+      "type": "string"
+    },
+    "autoShutdownStatus": {
+      "type": "string"
+    },
+    "autoShutdownTime": {
+      "type": "string"
+    },
+    "autoShutdownTimeZone": {
+      "type": "string"
+    },
+    "diagnosticsStorageAccountId": {
+      "type": "string"
+    },
+    "diagnosticsStorageAccountName": {
+      "type": "string"
+    },
+    "dnsLabelPrefix": {
+      "type": "string",
+      "defaultValue": "gluuserver-cc-01",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "location": {
+      "type": "string"
+    },
+    "networkInterfaceName": {
+      "type": "string"
+    },
+    "networkSecurityGroupName": {
+      "type": "string"
+    },
+    "networkSecurityGroupRules": {
+      "type": "array"
+    },
+    "osDiskType": {
+      "type": "string"
+    },
+    "publicIpAddressName": {
+      "type": "string"
+    },
+    "publicIpAddressSku": {
+      "type": "string"
+    },
+    "publicIpAddressType": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "virtualMachineName": {
+      "type": "string"
+    },
+    "virtualMachineRG": {
+      "type": "string"
+    },
+    "virtualMachineSize": {
+      "type": "string"
+    },
+    "virtualNetworkId": {
+      "type": "string"
+    }
+  },
     "variables": {
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
         "vnetId": "[parameters('virtualNetworkId')]",
@@ -227,13 +234,13 @@
                     "location": {
                         "value": "canadacentral"
                     },
-                    "fileUris": {
-                        "value": [
-                            "https://iaasv2tempstoragech.blob.core.windows.net/vmextensionstemporary-0003000021293145-20200126014118342/install_apache.sh?sv=2017-04-17&sr=c&sig=UyUJujr90s6tahRSFmGhH7aGCEOO8FTjMIJk2e2L9dg%3D&se=2020-01-27T01%3A41%3A18Z&sp=rw"
-                        ]
-                    },
-                    "commandToExecute": {
-                        "value": "sh install_apache.sh"
+                  "fileUris": [
+                    "[parameters('_artifactsLocation')]"
+                  ],
+                    "commandToExecute"
+                    :
+                    {
+                      "value": "sh install_apache.sh"
                     }
                 }
             },
