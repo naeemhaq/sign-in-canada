@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-echo "deb https://repo.gluu.org/ubuntu/ bionic main" > /etc/apt/sources.list.d/gluu-repo.list
-curl https://repo.gluu.org/ubuntu/gluu-apt.key | apt-key add -
-
 apt-get -y update
 
 # install Apache2
@@ -29,8 +25,15 @@ echo finished downloading
 unzip master.zip
 
 # isntall gluu server 
+echo "gluu server install begins"
+echo "deb https://repo.gluu.org/ubuntu/ bionic main" > /etc/apt/sources.list.d/gluu-repo.list
+curl https://repo.gluu.org/ubuntu/gluu-apt.key | apt-key add -
 apt-get install gluu-server
 
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
-
+/sbin/gluu-serverd login
+cd /install/community-edition-setup
+echo pwd
+wget https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/setup.properties
+./setup.py -psn -f setup.properties 
