@@ -194,56 +194,51 @@
                 "type": "systemAssigned"
             }
         },
-        {
-            "name": "[concat('shutdown-computevm-', parameters('virtualMachineName'))]",
-            "type": "Microsoft.DevTestLab/schedules",
-            "apiVersion": "2017-04-26-preview",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
-            ],
-            "properties": {
-                "status": "[parameters('autoShutdownStatus')]",
-                "taskType": "ComputeVmShutdownTask",
-                "dailyRecurrence": {
-                    "time": "[parameters('autoShutdownTime')]"
-                },
-                "timeZoneId": "[parameters('autoShutdownTimeZone')]",
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
-                "notificationSettings": {
-                    "status": "[parameters('autoShutdownNotificationStatus')]",
-                    "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
-                    "timeInMinutes": "30",
-                    "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
-                }
-            }
-        },
-        {
-            "name": "microsoft.custom-script-linux-20200125204657",
-            "apiVersion": "2015-01-01",
-            "type": "Microsoft.Resources/deployments",
-            "properties": {
-                "mode": "incremental",
-                "templateLink": {
-                    "uri": "https://gallery.azure.com/artifact/20161101/microsoft.custom-script-linux-arm.2.0.56/Artifacts/MainTemplate.json"
-                },
-              "parameters": {
-                "commandToExecute": {
-                  "value": "sh install_apache.sh"
-                },
-                "fileUris": "[parameters('_artifactsLocation')]",
-                "location": {
-                  "value": "canadacentral"
-                },
-                "vmName": {
-                  "value": "gluuserver-cc-01"
-                }
-              }
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
-            ]
+      {
+        "name": "[concat('shutdown-computevm-', parameters('virtualMachineName'))]",
+        "type": "Microsoft.DevTestLab/schedules",
+        "apiVersion": "2017-04-26-preview",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+        ],
+        "properties": {
+          "status": "[parameters('autoShutdownStatus')]",
+          "taskType": "ComputeVmShutdownTask",
+          "dailyRecurrence": {
+            "time": "[parameters('autoShutdownTime')]"
+          },
+          "timeZoneId": "[parameters('autoShutdownTimeZone')]",
+          "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
+          "notificationSettings": {
+            "status": "[parameters('autoShutdownNotificationStatus')]",
+            "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
+            "timeInMinutes": "30",
+            "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
+          }
         }
+      },
+      {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('virtualMachineName'),'/newuserscript')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+        ],
+        "properties": {
+          "publisher": "Microsoft.Azure.Extensions",
+          "type": "CustomScript",
+          "typeHandlerVersion": "2.0",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "fileUris": [
+              "[parameters('_artifactsLocation')]"
+            ],
+            "commandToExecute": "sh install_apache.sh"
+          }
+        }
+      }
     ],
     "outputs": {
         "adminUsername": {
