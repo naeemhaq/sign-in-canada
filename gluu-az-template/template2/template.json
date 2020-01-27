@@ -10,7 +10,7 @@
       "type": "string"
     },
     "adminPassword": {
-      "type": "secureString"
+      "type": "string"
     },
     "adminUsername": {
       "type": "string"
