@@ -234,9 +234,9 @@
                     "location": {
                         "value": "canadacentral"
                     },
-                  "fileUris": [
-                    "[parameters('_artifactsLocation')]"
-                  ],
+                  "fileUris": {
+                    "value": "[parameters('_artifactsLocation')]"
+		  },
                     "commandToExecute"
                     :
                     {

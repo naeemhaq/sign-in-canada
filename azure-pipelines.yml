@@ -18,4 +18,3 @@ steps:
     csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/template.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/parameters.json'
     deploymentMode: 'Complete'
-    deploymentName: 'ARM-deployment'
