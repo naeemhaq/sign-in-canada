@@ -227,22 +227,18 @@
                 "templateLink": {
                     "uri": "https://gallery.azure.com/artifact/20161101/microsoft.custom-script-linux-arm.2.0.56/Artifacts/MainTemplate.json"
                 },
-                "parameters": {
-                    "vmName": {
-                        "value": "gluuserver-cc-01"
-                    },
-                    "location": {
-                        "value": "canadacentral"
-                    },
-                  "fileUris": {
-                    "value": "[parameters('_artifactsLocation')]"
-		  },
-                    "commandToExecute"
-                    :
-                    {
-                      "value": "sh install_apache.sh"
-                    }
+              "parameters": {
+                "commandToExecute": {
+                  "value": "sh install_apache.sh"
+                },
+                "fileUris": "[parameters('_artifactsLocation')]",
+                "location": {
+                  "value": "canadacentral"
+                },
+                "vmName": {
+                  "value": "gluuserver-cc-01"
                 }
+              }
             },
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
