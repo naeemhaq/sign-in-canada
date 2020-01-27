@@ -63,7 +63,7 @@
     },
     "privateIPAddress": {
       "type": "string",
-      "allowedValues": ['10.1.0.5'],
+      "allowedValues": ["10.1.0.5"],
       "metadata": {
         "description": "Static Private IP will be assigned to the machine"
       }
