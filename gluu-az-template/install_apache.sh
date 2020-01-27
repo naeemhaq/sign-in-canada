@@ -28,6 +28,7 @@ unzip master.zip
 echo "gluu server install begins"
 echo "deb https://repo.gluu.org/ubuntu/ bionic main" > /etc/apt/sources.list.d/gluu-repo.list
 curl https://repo.gluu.org/ubuntu/gluu-apt.key | apt-key add -
+apt-get update
 apt-get install gluu-server
 
 /sbin/gluu-serverd enable
