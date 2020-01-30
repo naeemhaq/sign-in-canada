@@ -14,9 +14,9 @@
         "networkSecurityGroupRules": {
             "value": [
                 {
-                    "name": "http-s",
+                    "name": "allow-https",
                     "properties": {
-                        "priority": 1000,
+                        "priority": 1100,
                         "protocol": "TCP",
                         "access": "Allow",
                         "direction": "Inbound",
