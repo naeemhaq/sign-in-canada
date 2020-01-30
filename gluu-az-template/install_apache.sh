@@ -28,8 +28,10 @@ unzip master.zip
 echo "gluu server install begins"
 echo "deb https://repo.gluu.org/ubuntu/ bionic main" > /etc/apt/sources.list.d/gluu-repo.list
 curl https://repo.gluu.org/ubuntu/gluu-apt.key | apt-key add -
+wget https://repo.gluu.org/ubuntu/pool/main/bionic/gluu-server_4.0~bionic_amd64.deb
 apt-get update
-apt-get install gluu-server
+
+apt install -y gluu-server_4.0~bionic_amd64.deb
 
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
@@ -37,4 +39,6 @@ apt-get install gluu-server
 cd /install/community-edition-setup
 echo pwd
 wget https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/setup.properties
+
+ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1 
 ./setup.py -psn -f setup.properties 
