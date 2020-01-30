@@ -14,7 +14,7 @@
         "networkSecurityGroupRules": {
             "value": [
                 {
-                    "name": "default-allow-ssh",
+                    "name": "allow 443 and 80",
                     "properties": {
                         "priority": 1000,
                         "protocol": "TCP",
@@ -25,7 +25,7 @@
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*",
                         "destinationAddressPrefix": "*",
-                        "destinationPortRange": "443"
+                        "destinationPortRange": "443,80"
                     }
                 }
             ]
