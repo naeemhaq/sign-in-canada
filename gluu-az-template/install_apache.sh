@@ -14,7 +14,7 @@ echo "updating hosts file with hostname and IP addresses"
 
 ip=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text")
  hostname=gluuserver-cc-01.canadacentral.cloudapp.azure.com
- privateIP=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interfacipAddress/0/privateIpAddress?api-version=2017-08-01&format=text")
+ privateIP=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interfac/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text")
  sed -i.bkp "$ a $ip $hostname" /etc/hosts
  sed -i.bkp "$ a $privateIP $hostname" /etc/hosts
 
