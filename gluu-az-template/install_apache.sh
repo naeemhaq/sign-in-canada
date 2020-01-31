@@ -27,13 +27,3 @@ wget https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-te
 sed -i "s/10.1.0.5/$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)/g" setup.properties
 ./setup.py -psn -f setup.properties 
 
-echo downloading shib repo contents
-wget https://github.com/sign-in-canada/shib-oxauth-authn3/archive/master.zip
-echo finished downloading
-echo unziping shib-oxauth-authn3
-unzip master.zip
-rm master.zip
-echo downloading gluu-passport
-wget https://github.com/sign-in-canada/gluu-passport/archive/master.zip
-echo finished downloading
-unzip master.zip
