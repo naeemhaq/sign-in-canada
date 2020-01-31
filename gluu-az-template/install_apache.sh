@@ -1,26 +1,22 @@
 #!/bin/bash
 
-apt-get -y update
-
 # isntall gluu server 
 echo "gluu server install begins"
-echo "deb https://repo.gluu.org/ubuntu/ bionic main" > /etc/apt/sources.list.d/gluu-repo.list
-curl https://repo.gluu.org/ubuntu/gluu-apt.key | apt-key add - &> install.log
-wget https://repo.gluu.org/ubuntu/pool/main/bionic/gluu-server_4.0~bionic_amd64.deb
-apt-get update
-
+wget https://repo.gluu.org/rhel/Gluu-rhel7.repo -O /etc/yum.repos.d/Gluu.repo
+wget https://repo.gluu.org/rhel/RPM-GPG-KEY-GLUU -O /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
+yum clean all
+yum install gluu-server
 # update hosts file with hostname and IP addresses
 echo "updating hosts file with hostname and IP addresses"
 
 ip=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2017-08-01&format=text")
  hostname=gluuserver-cc-01.canadacentral.cloudapp.azure.com
- privateIP=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interfac/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text")
+ privateIP=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text")
  sed -i.bkp "$ a $ip $hostname" /etc/hosts
  sed -i.bkp "$ a $privateIP $hostname" /etc/hosts
 
- echo "installing gluu server package"
-apt install -y /var/lib/waagent/custom-script/download/0/gluu-server_4.0~bionic_amd64.deb
-
+ 
 echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
