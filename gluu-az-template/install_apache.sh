@@ -6,7 +6,7 @@ wget https://repo.gluu.org/rhel/Gluu-rhel7.repo -O /etc/yum.repos.d/Gluu.repo
 wget https://repo.gluu.org/rhel/RPM-GPG-KEY-GLUU -O /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
 yum clean all
-yum install gluu-server
+yum install -y gluu-server
 # update hosts file with hostname and IP addresses
 echo "updating hosts file with hostname and IP addresses"
 
