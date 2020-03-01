@@ -9,7 +9,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'AureRmPipeline-gluu'
+    azureResourceManagerConnection: 'gluu services'
     subscriptionId: '8b8dd0e3-8cff-4141-8422-47d2d8c78cb7'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'gluu-cc-rg'
