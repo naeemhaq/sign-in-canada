@@ -64,7 +64,7 @@
             "value": "Apple1995!Apple1995!"
         },
         "diagnosticsStorageAccountName": {
-            "value": "gluudiagst"
+            "value": "gluudiagst2"
         },
         "diagnosticsStorageAccountId": {
             "value": "/subscriptions/8b8dd0e3-8cff-4141-8422-47d2d8c78cb7/resourceGroups/gluu-cc-rg/providers/Microsoft.Storage/storageAccounts/gluudiagst"
