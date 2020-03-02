@@ -31,7 +31,7 @@ cd
 echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
-/sbin/gluu-serverd login
-cd /install/community-edition-setup
-./setup.py -psn -f setup.properties 
+#/sbin/gluu-serverd login
+#cd /install/community-edition-setup
+#./setup.py -psn -f setup.properties 
 
