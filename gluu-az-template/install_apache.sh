@@ -15,6 +15,7 @@ hostname=gluuserver-cc-01.canadacentral.cloudapp.azure.com
 privateIP=$(curl -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/privateIpAddress?api-version=2017-08-01&format=text")
 sed -i.bkp "$ a $ip $hostname" /etc/hosts
 sed -i.bkp "$ a $privateIP $hostname" /etc/hosts
+sed -i "s/gluu/$hostname/g" /etc/hostname
 
 echo "gluu server install begins"
 yum install -y gluu-server
