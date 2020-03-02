@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "naeemu"
+      "value": "gluu"
     },
     "adminPasswordOrKey": {
-      "value": "Apple1995!Apple1995!"
+      "value": "Apple1995!"
     },
     "dnsLabelPrefix": {
-      "value": "naeemu"
+      "value": "gluu"
     }
   }
 }
