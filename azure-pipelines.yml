@@ -15,6 +15,6 @@ steps:
     resourceGroupName: 'gluu-cc-rg'
     location: 'Canada Central'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/parameters.json'
+    csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/template.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/parameters.json'
     deploymentMode: 'Complete'
