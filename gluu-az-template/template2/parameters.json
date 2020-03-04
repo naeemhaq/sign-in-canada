@@ -14,19 +14,19 @@
         "networkSecurityGroupRules": {
             "value": [
                 {
-                    "name": "allow-https",
-                    "properties": {
-                        "priority": 1100,
-                        "protocol": "TCP",
-                        "access": "Allow",
-                        "direction": "Inbound",
-                        "sourceApplicationSecurityGroups": [],
-                        "destinationApplicationSecurityGroups": [],
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "443"
-                    }
+                    "name": "home-traffic",
+                  "properties": {
+                    "priority": 1100,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceApplicationSecurityGroups": [],
+                    "destinationApplicationSecurityGroups": [],
+                    "sourceAddressPrefix": "174.112.28.92/32",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "*"
+                  }
                 }
             ]
         },
