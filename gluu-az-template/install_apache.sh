@@ -19,18 +19,22 @@ echo > /etc/hostname
 echo $hostname > /etc/hostname
 
 echo "gluu server install begins"
-yum install -y gluu-server
+#yum install -y gluu-server
+wget https://repo.gluu.org/centos/7/gluu-server-4.0-centos7.x86_64.rpm
+rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+wget https://sicqa.blob.core.windows.net/staging/SIC-AP-0.0.31.tgz
+tar -xvf SIC-AP-0.0.31.tgz
 
-echo "downloading setup.py and updating properties file"
-cd /opt/gluu-server/install/community-edition-setup
-wget https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/setup.properties
-sed -i "s/10.1.0.5/$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)/g" setup.properties
+#echo "downloading setup.py and updating properties file"
+#cd /opt/gluu-server/install/community-edition-setup
+#wget https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/setup.properties
+#sed -i "s/10.1.0.5/$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)/g" setup.properties
 
-cd
+#cd
 
-echo "enabling gluu server and logging into container"
-/sbin/gluu-serverd enable
-/sbin/gluu-serverd start
+#echo "enabling gluu server and logging into container"
+#/sbin/gluu-serverd enable
+#/sbin/gluu-serverd start
 #/sbin/gluu-serverd login
 #cd /install/community-edition-setup
 #./setup.py -psn -f setup.properties 
