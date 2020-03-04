@@ -21,16 +21,23 @@ echo $hostname > /etc/hostname
 echo "gluu server install begins"
 #yum install -y gluu-server
 wget https://repo.gluu.org/centos/7/gluu-server-4.0-centos7.x86_64.rpm
-rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+#rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+
+echo "enabling gluu server and logging into container"
+/sbin/gluu-serverd enable
+/sbin/gluu-serverd start
 
 echo "downloading SIC tarball"
 wget https://sicqa.blob.core.windows.net/staging/SIC-AP-0.0.31.tgz
 tar -xvf SIC-AP-0.0.31.tgz
 
 echo "downloading couchbase"
+mkdir /opt/gluu-server/opt/dist/couchbase
 wget https://gluudiagst2.blob.core.windows.net/gluustaging/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm
-
+mv /var/lib/waagent/custom-script/download/0/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm /opt/gluu-server/opt/dist/couchbase/
 echo "done!!"
+
+exit
 
 #echo "downloading setup.py and updating properties file"
 #cd /opt/gluu-server/install/community-edition-setup
@@ -39,9 +46,6 @@ echo "done!!"
 
 #cd
 
-#echo "enabling gluu server and logging into container"
-#/sbin/gluu-serverd enable
-#/sbin/gluu-serverd start
 #/sbin/gluu-serverd login
 #cd /install/community-edition-setup
 #./setup.py -psn -f setup.properties 
