@@ -21,6 +21,7 @@ echo $hostname > /etc/hostname
 echo "gluu server install begins"
 #yum install -y gluu-server
 wget https://repo.gluu.org/centos/7/gluu-server-4.0-centos7.x86_64.rpm
+mv gluu-server-4.0-centos7.x86_64.rpm /home/gluu
 #rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
 
 echo "enabling gluu server and logging into container"
