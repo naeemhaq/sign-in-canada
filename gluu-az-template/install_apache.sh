@@ -22,7 +22,10 @@ echo "gluu server install begins"
 #yum install -y gluu-server
 wget https://repo.gluu.org/centos/7/gluu-server-4.0-centos7.x86_64.rpm
 mv gluu-server-4.0-centos7.x86_64.rpm /home/gluu
-#rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+echo "updating the timeouts"
+sed -i "s/# jetty.server.stopTimeout=5000/jetty.server.stopTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
+sed -i "s/# jetty.http.connectTimeout=15000/jetty.http.connectTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
 
 echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
