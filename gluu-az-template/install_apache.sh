@@ -22,8 +22,15 @@ echo "gluu server install begins"
 #yum install -y gluu-server
 wget https://repo.gluu.org/centos/7/gluu-server-4.0-centos7.x86_64.rpm
 rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+
+echo "downloading SIC tarball"
 wget https://sicqa.blob.core.windows.net/staging/SIC-AP-0.0.31.tgz
 tar -xvf SIC-AP-0.0.31.tgz
+
+echo "downloading couchbase"
+wget https://gluudiagst2.blob.core.windows.net/gluustaging/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm
+
+echo "done!!"
 
 #echo "downloading setup.py and updating properties file"
 #cd /opt/gluu-server/install/community-edition-setup
