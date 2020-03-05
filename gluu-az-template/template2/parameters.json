@@ -55,7 +55,7 @@
             "value": "Premium_LRS"
         },
         "virtualMachineSize": {
-            "value": "Standard_B2s"
+            "value": "Standard_D4s_v3"
         },
         "adminUsername": {
             "value": "gluu"
