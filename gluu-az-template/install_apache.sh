@@ -41,6 +41,11 @@ wget https://gluudiagst2.blob.core.windows.net/gluustaging/couchbase-server-ente
 mv /var/lib/waagent/custom-script/download/0/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm /opt/gluu-server/opt/dist/couchbase/
 echo "done!!"
 
+echo "install certbot"
+yum -y install yum-utils
+yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+yum install certbot python2-certbot-apache
+
 exit
 
 #echo "downloading setup.py and updating properties file"
