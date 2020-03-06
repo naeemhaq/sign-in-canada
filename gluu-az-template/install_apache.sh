@@ -42,8 +42,8 @@ echo "done!!"
 
 echo "install certbot"
 yum -y install yum-utils
-yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
-yum install certbot python2-certbot-apache
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum -y install certbot python2-certbot-apache
 
 exit
 
