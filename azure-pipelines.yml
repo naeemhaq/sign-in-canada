@@ -1,0 +1,27 @@
+# Codeceptjs based BDD testing
+
+name: $(Build.DefinitionName).$(BuildID).$(Rev:.rr)
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'npm install'
+
+- script: |
+    npm run sim-dev3 &
+  displayName: 'sim dev3'
+
+- script: |
+    CSP_HOST=_local npm run ci
+  displayName: 'Run tests'

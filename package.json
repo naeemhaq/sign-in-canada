@@ -1,0 +1,23 @@
+{
+  "name": "sign-in-canada-bdd",
+  "version": "0.0.1",
+  "description": "bdd tests for sign in canada",
+  "scripts": {
+    "test": "codeceptjs run --steps",
+    "ci": "codeceptjs run --steps -o '{ \"helpers\": {\"Playwright\": {\"show\": false}}}'",
+    "sim-dev3": "http-server dev3"
+  },
+  "keywords": [],
+  "author": "vid",
+  "license": "ISC",
+  "devDependencies": {
+    "codeceptjs": "^3.0.0-beta.4",
+    "http-server": "^0.12.3",
+    "playwright": "^1.3.0"
+  },
+  "dependencies": {
+    "@codeceptjs/ui": "github:codeceptjs/ui",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}
