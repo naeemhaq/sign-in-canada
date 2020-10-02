@@ -2,14 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "devName": {
+            "value": "DevName"
+        },
         "location": {
             "value": "canadacentral"
         },
+        "resourceGroupName": {
+            "value": "rg-"
+        },
         "networkInterfaceName": {
-            "value": "gluuserver-cc-01747"
+            "value": "gluusrv-nic-"
         },
         "networkSecurityGroupName": {
-            "value": "gluuserver-cc-01-nsg"
+            "value": "gluusrv-nsg-"
         },
         "networkSecurityGroupRules": {
             "value": [
@@ -33,11 +39,8 @@
         "subnetName": {
             "value": "default"
         },
-        "virtualNetworkId": {
-            "value": "/subscriptions/8b8dd0e3-8cff-4141-8422-47d2d8c78cb7/resourceGroups/gluu-cc-rg/providers/Microsoft.Network/virtualNetworks/vNet"
-        },
         "publicIpAddressName": {
-            "value": "gluuserver-cc-01-ip"
+            "value": "gluusrv-ip-"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
@@ -46,10 +49,7 @@
             "value": "Basic"
         },
         "virtualMachineName": {
-            "value": "gluuserver-cc-01"
-        },
-        "virtualMachineRG": {
-            "value": "gluu-cc-rg"
+            "value": "gluusrv-01-"
         },
         "osDiskType": {
             "value": "Premium_LRS"
@@ -60,20 +60,14 @@
         "adminUsername": {
             "value": "gluu"
         },
-        "adminPassword": {
-            "value": "Apple1995!"
-        },
-        "diagnosticsStorageAccountName": {
-            "value": "gluudiagst2"
-        },
-        "diagnosticsStorageAccountId": {
-            "value": "/subscriptions/8b8dd0e3-8cff-4141-8422-47d2d8c78cb7/resourceGroups/gluu-cc-rg/providers/Microsoft.Storage/storageAccounts/gluudiagst"
+        "adminPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj/dqF5h/DC4reWHV/Zhay2x1dmsi0xV9dnOXk8ZYW0Y9Kb1J08EV3FXoDwgMDouJ5Zdjnu1RcuJofGGGMMgazjbGxJt4xiiu7Nbqa2XPbxIp8ks705crxXo7IU5Sv5ETYn5Zb0VSCXnOdHVd8dKXMXYWzEpe3UEBMVG9ME4Bg+5bTQZ+ARaV8MCJ/Woi/9e7zkoF7VfuRmkCltDEo97hHKYo7ACutGMJAOT80LJDWNVGwFxYyKY+5BIEFcwSX/piw37w0xvC2k/oQ/33QOssXJ/bE2LSBdYbeoVa4YHhCqMbhZZ9ynkufZ8VBO8e4FsFg4CI/dEIKdXCJajOdKOXICQpABcURpt7biP+qidb+nsbsXkLL0esva+Z5TtdXhpW3EKT32CzULwE3T1poXLyYnIWaODCncpLh5Ifg9dHgpgVaPPsFC9aTH8SZ92CF9/0Fa8luIw0PE7zp2krshRvuOkvC115aUPB5rRNBqg+7uYlPffoUi7X9BktvEkZfG0U="
         },
         "autoShutdownStatus": {
             "value": "Enabled"
         },
         "autoShutdownTime": {
-            "value": "15:30"
+            "value": "17:30"
         },
         "autoShutdownTimeZone": {
             "value": "Eastern Standard Time"
