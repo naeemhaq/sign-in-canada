@@ -79,9 +79,6 @@
     "virtualMachineName": {
       "type": "string"
     },
-    "virtualMachineRG": {
-      "type": "string"
-    },
     "virtualMachineSize": {
       "type": "string"
     },
