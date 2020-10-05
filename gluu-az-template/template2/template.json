@@ -1,6 +1,6 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
       "type": "string",
@@ -22,7 +22,7 @@
       "type": "string"
     },
     "adminPublicKey": {
-      "type": "secureString"
+      "type": "string"
     },
     "adminUsername": {
       "type": "string"
@@ -144,7 +144,7 @@
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables['nsgName'])]"
+                    "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
                 }
             }
         },
