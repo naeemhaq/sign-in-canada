@@ -10,7 +10,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Subscription'
-    azureResourceManagerConnection: 'ARM-Deployments'
+    azureResourceManagerConnection: 'Azure subscription 1(1)(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
     subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
     location: 'Canada Central'
     templateLocation: 'URL of the file'
