@@ -81,9 +81,6 @@
     },
     "virtualMachineSize": {
       "type": "string"
-    },
-    "virtualNetworkId": {
-      "type": "string"
     }
   },
     "variables": {
