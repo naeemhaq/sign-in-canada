@@ -84,7 +84,7 @@
     }
   },
     "variables": {
-        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "vnetId": "[resourceId(variables('rgName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
         "storageName": "[toLower( concat( parameters('devName'), uniqueString(resourceGroup().id) ) )]",
         "rgName": "[toLower( concat( parameters('devName'), parameters('resourceGroupName'), uniqueString(resourceGroup().id) ) )]",
