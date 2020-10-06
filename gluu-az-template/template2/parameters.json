@@ -58,7 +58,7 @@
             ]
         },
         "publicIpAddressName": {
-            "value": "gluusrv-ip-"
+            "value": "gluusrv-ip"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
