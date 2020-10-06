@@ -98,16 +98,6 @@
     },
     "resources": [
         {
-          "type": "Microsoft.Resources/resourceGroups",
-          "apiVersion": "2018-05-01",
-          "location": "[parameters('location')]",
-          "name": "[variables('rgName')]",
-          "tags": {
-            "Note": "PipelineDeployment"
-          },
-          "properties": {}
-        },
-        {
           "type": "Microsoft.Storage/storageAccounts",
           "name": "[variables('storageName')]",
           "apiVersion": "2015-06-15",
