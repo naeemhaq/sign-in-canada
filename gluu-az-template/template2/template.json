@@ -76,6 +76,12 @@
     "subnetName": {
       "type": "string"
     },
+    "addressPrefixes": {
+      "type": "array"
+    },
+    "subnets": {
+        "type": "array"
+    },
     "virtualMachineName": {
       "type": "string"
     },
@@ -94,7 +100,8 @@
         "nicName": "[toLower( concat( parameters('devName'), parameters('networkInterfaceName'), uniqueString(resourceGroup().id) ) )]",
         "pipName": "[toLower( concat( parameters('devName'), parameters('publicIpAddressName'), uniqueString(resourceGroup().id) ) )]",
         "vmName": "[toLower( concat( parameters('devName'), parameters('virtualMachineName'), uniqueString(resourceGroup().id) ) )]",
-        "nsgName": "[toLower( concat( parameters('devName'), parameters('networkSecurityGroupName'), uniqueString(resourceGroup().id) ) )]"
+        "nsgName": "[toLower( concat( parameters('devName'), parameters('networkSecurityGroupName'), uniqueString(resourceGroup().id) ) )]",
+        "vnetName": "[toLower( concat( parameters('devName'), parameters('virtualNetworkName'), uniqueString(resourceGroup().id) ) )]"
     },
     "resources": [
         {
@@ -143,6 +150,18 @@
             "properties": {
                 "securityRules": "[parameters('networkSecurityGroupRules')]"
             }
+        },
+        {
+          "name": "[variables('vnetName')]",
+          "type": "Microsoft.Network/virtualNetworks",
+          "apiVersion": "2019-09-01",
+          "location": "[parameters('location')]",
+          "properties": {
+              "addressSpace": {
+                  "addressPrefixes": "[parameters('addressPrefixes')]"
+              },
+              "subnets": "[parameters('subnets')]"
+          }
         },
         {
             "name": "[varaibles('pipName')]",

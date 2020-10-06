@@ -42,6 +42,21 @@
         "subnetName": {
             "value": "default"
         },
+        "addressPrefixes": {
+            "value": [
+                "10.0.16.0/24"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "default",
+                    "properties": {
+                        "addressPrefix": "10.0.16.0/24"
+                    }
+                }
+            ]
+        },
         "publicIpAddressName": {
             "value": "gluusrv-ip-"
         },
