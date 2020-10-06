@@ -81,6 +81,9 @@
     },
     "virtualMachineSize": {
       "type": "string"
+    },
+    "virtualNetworkName":{
+      "type": "string"
     }
   },
     "variables": {

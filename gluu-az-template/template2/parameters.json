@@ -36,6 +36,9 @@
                 }
             ]
         },
+        "virtualNetworkName":{
+            "value": "gluusrv-vnet"
+        },
         "subnetName": {
             "value": "default"
         },
