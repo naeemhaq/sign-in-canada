@@ -120,6 +120,7 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
                 "[concat('Microsoft.Network/publicIpAddresses/', variables('pipName'))]"
             ],
             "properties": {
@@ -160,7 +161,7 @@
               "addressSpace": {
                   "addressPrefixes": "[parameters('addressPrefixes')]"
               },
-              "subnets": "[parameters('subnets')]"
+              "subnets": "[variables('subnetRef')]"
           }
         },
         {
