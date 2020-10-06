@@ -98,7 +98,7 @@
         "storageName": "[toLower( concat( parameters('devName'), uniqueString(resourceGroup().id) ) )]",
         "rgName": "[toLower( concat( parameters('devName'), parameters('resourceGroupName'), uniqueString(resourceGroup().id) ) )]",
         "nicName": "[toLower( concat( parameters('devName'), parameters('networkInterfaceName'), uniqueString(resourceGroup().id) ) )]",
-        "pipName": "[toLower( concat( parameters('devName'), parameters('publicIpAddressName'), uniqueString(resourceGroup().id) ) )]",
+        "pipName": "[toLower( concat( parameters('devName'), parameters('publicIpAddressName')) )]",
         "vmName": "[toLower( concat( parameters('devName'), parameters('virtualMachineName'), uniqueString(resourceGroup().id) ) )]",
         "nsgName": "[toLower( concat( parameters('devName'), parameters('networkSecurityGroupName'), uniqueString(resourceGroup().id) ) )]",
         "vnetName": "[toLower( concat( parameters('devName'), parameters('virtualNetworkName'), uniqueString(resourceGroup().id) ) )]"
