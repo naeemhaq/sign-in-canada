@@ -125,7 +125,6 @@
       "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
-      "storageName": "[toLower( concat( parameters('devName'), uniqueString(resourceGroup().id) ) )]",
       "osDiskType": "Standard_LRS",
       "subnetAddressPrefix": "10.1.0.0/24",
       "addressPrefix": "10.1.0.0/16",
