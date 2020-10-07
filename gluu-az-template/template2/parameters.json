@@ -43,9 +43,7 @@
             "value": "default"
         },
         "addressPrefixes": {
-            "value": [
-                "10.0.16.0/24"
-            ]
+            "value": "10.0.16.0/24"
         },
         "publicIpAddressName": {
             "value": "gluusrv-ip"

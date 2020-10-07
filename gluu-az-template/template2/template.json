@@ -77,7 +77,7 @@
       "type": "string"
     },
     "addressPrefixes": {
-      "type": "array"
+      "type": "string"
     },
     "virtualMachineName": {
       "type": "string"
@@ -126,7 +126,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnetNamevar')]"
+                                "id": "[resourceId(resourceGroup().name, variables('subnetNamevar')]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
