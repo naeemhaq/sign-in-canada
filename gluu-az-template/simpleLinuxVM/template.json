@@ -283,17 +283,17 @@
             "adminUsername": "[parameters('adminUsername')]",
             "adminPassword": "[parameters('adminPasswordOrKey')]",
             "linuxConfiguration": "[if(equals(parameters('authenticationType'), 'password'), json('null'), variables('linuxConfiguration'))]"
-          }
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-              "enabled": true,
-              "storageUri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/')]"
-          }
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+                "enabled": true,
+                "storageUri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/')]"
+            }
         },
         "identity": {
             "type": "systemAssigned"
         }
+      }
       },
       {
         "name": "[concat('shutdown-computevm-', parameters('vmName'))]",
