@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+- group: dev
+- name: dnsLabel-Prefix
+  value: $[variables.dnsLabelPrefix]
 steps:
 
 - task: AzureResourceManagerTemplateDeployment@3
@@ -22,5 +26,5 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/template.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/parameters.json'
-    overrideParameters: '-adminUsername gluu -adminPasswordOrKey deep_Thoughts! -dnsLabelPrefix ${{ variables.dnsLabelPrefix}}'
+    overrideParameters: '-adminUsername gluu -adminPasswordOrKey deep_Thoughts! -dnsLabelPrefix $(dnsLabel-Prefix)'
     deploymentMode: 'Incremental'
