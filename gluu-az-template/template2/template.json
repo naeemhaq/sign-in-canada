@@ -97,7 +97,7 @@
         "pipName": "[toLower( concat( parameters('devName'), parameters('publicIpAddressName')) )]",
         "vmName": "[toLower( concat( parameters('devName'), parameters('virtualMachineName'), uniqueString(resourceGroup().id) ) )]",
         "nsgName": "[toLower( concat( parameters('devName'), parameters('networkSecurityGroupName'), uniqueString(resourceGroup().id) ) )]",
-        "vnetName": "[toLower( concat( parameters('devName'), parameters('virtualNetworkName'), uniqueString(resourceGroup().id) ) )]",
+        "vnetName": "[toLower( concat( parameters('devName'), parameters('virtualNetworkName')) )]",
         "subnetNamevar": "[toLower( concat(variables('vnetName'), '/', parameters('subnetName') ) )]"
     },
     "resources": [
