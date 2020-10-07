@@ -22,5 +22,5 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/template.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/parameters.json'
-    overrideParameters: '-adminUsername gluu -adminPasswordOrKey deep_Thoughts! -dnsLabelPrefix pipelinetest'
+    overrideParameters: '-adminUsername gluu -adminPasswordOrKey deep_Thoughts! -dnsLabelPrefix $(dnsLabelPrefix)'
     deploymentMode: 'Incremental'
