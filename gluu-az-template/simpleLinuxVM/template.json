@@ -318,7 +318,7 @@
             "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
           }
         }
-      }
+      },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(parameters('vmName'),'/newuserscript')]",
