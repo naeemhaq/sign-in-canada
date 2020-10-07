@@ -158,7 +158,7 @@
               "addressSpace": {
                   "addressPrefixes": "[parameters('addressPrefixes')]"
               },
-              "subnets": "[varaibles('subnetNamevar')]"
+              "subnets": "[variables('subnetNamevar')]"
           }
         },
         {
