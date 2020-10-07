@@ -288,11 +288,11 @@
                 "enabled": true,
                 "storageUri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/')]"
             }
+          }
         },
         "identity": {
-            "type": "systemAssigned"
+          "type": "systemAssigned"
         }
-      }
       },
       {
         "name": "[concat('shutdown-computevm-', parameters('vmName'))]",
