@@ -94,7 +94,6 @@
   },
     "variables": {
         "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
         "storageName": "[toLower( concat( parameters('devName'), uniqueString(resourceGroup().id) ) )]",
         "rgName": "[toLower( concat( parameters('devName'), parameters('resourceGroupName'), uniqueString(resourceGroup().id) ) )]",
         "nicName": "[toLower( concat( parameters('devName'), parameters('networkInterfaceName'), uniqueString(resourceGroup().id) ) )]",
@@ -129,7 +128,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnetRef')]"
+                                "id": "[parameters('subnetName')]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
@@ -161,7 +160,19 @@
               "addressSpace": {
                   "addressPrefixes": "[parameters('addressPrefixes')]"
               },
-              "subnets": "[variables('subnetRef')]"
+              "subnets": "[parameters('subnetName')]"
+          }
+        },
+        {
+          "type": "Microsoft.Network/virtualNetworks/subnets",
+          "apiVersion": "2020-05-01",
+          "location": "[parameters('location')]",
+          "name": "[parameters('subnetName')]",
+          "dependsOn": [
+            "[variables('vnetName')]"
+          ],
+          "properties": {
+            "addressPrefix": "[parameters('addressPrefixes')]"
           }
         },
         {
