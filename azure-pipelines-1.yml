@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+- group: dev
+
 steps:
 
 - task: AzureResourceManagerTemplateDeployment@3
@@ -17,9 +20,10 @@ steps:
     azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
     subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'pipeline'
+    resourceGroupName: $(rgName)
     location: 'Canada Central'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/template.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/parameters.json'
+    csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/template.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/parameters.json'
+    overrideParameters: '-adminUsername gluu -adminPasswordOrKey deep_Thoughts! -dnsLabelPrefix $(dnsLabelPrefix)'
     deploymentMode: 'Incremental'
