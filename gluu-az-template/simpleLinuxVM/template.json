@@ -119,6 +119,14 @@
       "storageName":{
         "type": "string",
         "defaultValue": "pipelineStorage"
+      },
+      "subnetAddressPrefix":{
+        "type":"string",
+        "defaultValue": "10.0.1.0/24"
+      },
+      "addressPrefix":{
+        "type": "string",
+        "defaultValue": "10.0.1.0/24"
       }
     },
     "variables": {
@@ -126,8 +134,6 @@
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
       "osDiskType": "Standard_LRS",
-      "subnetAddressPrefix": "10.1.0.0/24",
-      "addressPrefix": "10.1.0.0/16",
       "linuxConfiguration": {
         "disablePasswordAuthentication": true,
         "ssh": {
@@ -211,14 +217,14 @@
         "properties": {
           "addressSpace": {
             "addressPrefixes": [
-              "[variables('addressPrefix')]"
+              "[parameters('addressPrefix')]"
             ]
           },
           "subnets": [
             {
               "name": "[parameters('subnetName')]",
               "properties": {
-                "addressPrefix": "[variables('subnetAddressPrefix')]",
+                "addressPrefix": "[parameters('subnetAddressPrefix')]",
                 "privateEndpointNetworkPolicies": "Enabled",
                 "privateLinkServiceNetworkPolicies": "Enabled"
               }
