@@ -127,6 +127,10 @@
       "addressPrefix":{
         "type": "string",
         "defaultValue": "10.0.1.0/24"
+      },
+      "homeTrafficRule": {
+        "type": "string",
+        "defaultValue": "174.112.28.92/32"
       }
     },
     "variables": {
@@ -194,7 +198,7 @@
         "properties": {
           "securityRules": [
             {
-              "name": "SSH",
+              "name": "Internet",
               "properties": {
                 "priority": 1000,
                 "protocol": "TCP",
@@ -203,7 +207,22 @@
                 "sourceAddressPrefix": "*",
                 "sourcePortRange": "*",
                 "destinationAddressPrefix": "*",
-                "destinationPortRange": "22"
+                "destinationPortRange": "443"
+              }
+            },
+            {
+              "name": "home-traffic",
+              "properties": {
+                "priority": 1100,
+                "protocol": "TCP",
+                "access": "Allow",
+                "direction": "Inbound",
+                "sourceApplicationSecurityGroups": [],
+                "destinationApplicationSecurityGroups": [],
+                "sourceAddressPrefix": "[parameters('homeTrafficRule')]",
+                "sourcePortRange": "*",
+                "destinationAddressPrefix": "*",
+                "destinationPortRange": "*"
               }
             }
           ]
