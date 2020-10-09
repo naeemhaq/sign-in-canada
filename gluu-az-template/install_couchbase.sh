@@ -15,6 +15,9 @@ curl -O https://packages.couchbase.com/releases/couchbase-release/couchbase-rele
 sudo rpm -i ./couchbase-release-1.0-x86_64.rpm
 sudo yum -y install couchbase-server
 
+echo "waiting for services to start"
+sleep 30
+
 echo "setup cluster"
 curl -v -X POST http://localhost:8091/pools/default -d memoryQuota=2048  -d indexMemoryQuota=512
 curl -v http://localhost:8091/node/controller/setupServices -d services=kv%2cn1ql%2Cindex

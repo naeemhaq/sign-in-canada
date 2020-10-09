@@ -11,7 +11,7 @@
       },
       "commandToExec":{
         "type": "string",
-        "defaultValue": "install.sh"
+        "defaultValue": "sh install.sh"
       },
       "vmName": {
         "type": "string",
