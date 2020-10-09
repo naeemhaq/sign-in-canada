@@ -9,6 +9,10 @@
             "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
         }
       },
+      "commandToExec":{
+        "type": "string",
+        "defaultValue": "install.sh"
+      },
       "vmName": {
         "type": "string",
         "defaultValue": "simpleLinuxVM",
@@ -360,7 +364,7 @@
             "fileUris": [
               "[parameters('_artifactsLocation')]"
             ],
-            "commandToExecute": "sh install_apache.sh"
+            "commandToExecute": "[parameters('commandToExec')]"
           }
         }
       }
