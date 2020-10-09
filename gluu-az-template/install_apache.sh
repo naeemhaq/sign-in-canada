@@ -34,11 +34,11 @@ echo "downloading SIC tarball"
 wget https://sicqa.blob.core.windows.net/staging/SIC-AP-0.0.31.tgz
 tar -xvf SIC-AP-0.0.31.tgz
 
-echo "downloading couchbase"
-mkdir /opt/gluu-server/opt/dist/couchbase
-wget https://nqtech.blob.core.windows.net/gluustaging/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm
-mv /var/lib/waagent/custom-script/download/0/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm /opt/gluu-server/opt/dist/couchbase/
-echo "done!!"
+#echo "downloading couchbase"
+#mkdir /opt/gluu-server/opt/dist/couchbase
+#wget https://nqtech.blob.core.windows.net/gluustaging/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm
+#mv /var/lib/waagent/custom-script/download/0/couchbase-server-enterprise-6.5.0-centos7.x86_64.rpm /opt/gluu-server/opt/dist/couchbase/
+#echo "done!!"
 
 echo "install certbot"
 yum -y install yum-utils
