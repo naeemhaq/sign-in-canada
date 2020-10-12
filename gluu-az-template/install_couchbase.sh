@@ -22,6 +22,7 @@ sh -c 'echo "" >> /etc/sysctl.conf'
 sh -c 'echo "#Set swappiness to 0 to avoid swapping" >> /etc/sysctl.conf'
 sh -c 'echo "vm.swappiness = 0" >> /etc/sysctl.conf'
 
+echo "setting up certbot"
 set -o nounset
 set -o errexit
  
@@ -29,19 +30,19 @@ set -o errexit
 export HOME="/root"
 export PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
  
-# No package install yet.
+echo "No package install yet."
 wget https://dl.eff.org/certbot-auto
 chmod a+x certbot-auto
 mv certbot-auto /usr/local/bin
  
-# Install the dependencies.
+echo "Install the dependencies."
 certbot-auto --noninteractive --os-packages-only
  
-# Set up config file.
+echo "Set up cert config file."
 mkdir -p /etc/letsencrypt
 cat > /etc/letsencrypt/cli.ini <<EOF
 # Uncomment to use the staging/testing server - avoids rate limiting.
-# server = https://acme-staging.api.letsencrypt.org/directory
+server = https://acme-staging.api.letsencrypt.org/directory
  
 # Use a 4096 bit RSA key instead of 2048.
 rsa-key-size = 4096
@@ -58,8 +59,8 @@ non-interactive = True
 agree-tos = True
  
 # Use the webroot authenticator.
-authenticator = webroot
-webroot-path = /var/www/html
+#authenticator = webroot
+#webroot-path = /var/www/html
 EOF
  
 # Obtain cert.
