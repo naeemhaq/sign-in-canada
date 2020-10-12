@@ -211,7 +211,7 @@
                 "sourceAddressPrefix": "*",
                 "sourcePortRange": "*",
                 "destinationAddressPrefix": "*",
-                "destinationPortRange": ["443","80"]
+                "destinationPortRange": "443,80"
               }
             },
             {
