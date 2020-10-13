@@ -14,8 +14,15 @@ echo $hostname > /etc/hostname
 
 echo "pre-installation steps"
 mkdir /etc/tuned/no-thp
-echo -e "[main]\ninclude=virtual-guest\n[vm]\ntransparent_hugepages=never" > /etc/tuned/no-thp/tuned.conf
+cat > /etc/tuned/no-thp/tuned.conf <<EOF
+[main]
+include=virtual-guest
+
+[vm]
+transparent_hugepages=never
+EOF
 tuned-adm profile no-thp
+
 sh -c 'echo 0 > /proc/sys/vm/swappiness'
 cp -p /etc/sysctl.conf /etc/sysctl.conf.`date +%Y%m%d-%H:%M`
 sh -c 'echo "" >> /etc/sysctl.conf'
@@ -25,18 +32,32 @@ sh -c 'echo "vm.swappiness = 0" >> /etc/sysctl.conf'
 echo "setting up certbot"
 set -o nounset
 set -o errexit
- 
-# May or may not have HOME set, and this drops stuff into ~/.local.
-export HOME="/root"
-export PATH="${PATH}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
- 
-echo "No package install yet."
-wget https://dl.eff.org/certbot-auto
-chmod a+x certbot-auto
-mv certbot-auto /usr/local/bin
- 
-echo "Install the dependencies."
-certbot-auto --noninteractive --os-packages-only
+
+echo "dnf install"
+dnf -y install epel-release
+
+echo "dnf upgrade"
+#dnf -y upgrade
+
+echo "yum snapd"
+yum -y install snapd
+
+echo "enable snapd.socket"
+systemctl enable --now snapd.socket
+
+echo "setup link to snap"
+ln -s /var/lib/snapd/snap /snap
+
+systemctl restart snapd.seeded.service
+
+echo "check snap version with core and refresh"
+snap install core; sudo snap refresh core
+
+echo "install certbot"
+snap install --classic certbot
+
+echo "setup link"
+ln -s /snap/bin/certbot /usr/bin/certbot
  
 echo "Set up cert config file."
 mkdir -p /etc/letsencrypt
@@ -62,12 +83,9 @@ agree-tos = True
 #authenticator = webroot
 #webroot-path = /var/www/html
 EOF
- 
-# Obtain cert.
-certbot-auto certonly
 
-#echo "creating certbot ini file"
-#echo -e "# Use a 4096 bit RSA key instead of 2048.\nrsa-key-size = 4096\n\n# Set email and domains.\nemail = info@nqtech.ca\ndomains = ${hostname}\n\n\n# Text interface.\ntext = True\n# No prompts.\nnon-interactive = True\n# Suppress the Terms of Service agreement interaction.\nagree-tos = True\n\n# Use the webroot authenticator.\nauthenticator = webroot\nwebroot-path = /var/www/html" >
+echo "run certbot"
+certbot certonly --standalone
 
 echo "install couchbase"  
 curl -O https://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-x86_64.rpm

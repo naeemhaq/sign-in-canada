@@ -20,7 +20,28 @@ echo > /etc/hostname
 echo $hostname > /etc/hostname
 
 # certbot ini file. 
-echo -e "# Use a 4096 bit RSA key instead of 2048.\nrsa-key-size = 4096\n\n# Set email and domains.\nemail = info@nqtech.ca\ndomains = ${hostname}\n\n\n# Text interface.\ntext = True\n# No prompts.\nnon-interactive = True\n# Suppress the Terms of Service agreement interaction.\nagree-tos = True\n\n# Use the webroot authenticator.\nauthenticator = webroot\nwebroot-path = /var/www/html" >
+cat > /etc/letsencrypt/cli.ini <<EOF
+# Uncomment to use the staging/testing server - avoids rate limiting.
+server = https://acme-staging.api.letsencrypt.org/directory
+ 
+# Use a 4096 bit RSA key instead of 2048.
+rsa-key-size = 4096
+ 
+# Set email and domains.
+email = info@nqteh.ca
+domains = ${hostname}
+ 
+# Text interface.
+text = True
+# No prompts.
+non-interactive = True
+# Suppress the Terms of Service agreement interaction.
+agree-tos = True
+ 
+# Use the webroot authenticator.
+#authenticator = webroot
+#webroot-path = /var/www/html
+EOF
 
 echo "install certbot"
 yum -y install epel-release
@@ -33,9 +54,10 @@ yum -y install certbot python2-certbot-apache
 sudo certbot certonly --standalone
 
 echo "gluu server install begins"
+mkdir staging && cd staging
 #yum install -y gluu-server
-wget https://repo.gluu.org/centos/7/gluu-server-4.0-centos7.x86_64.rpm
-rpm -Uvh gluu-server-4.0-centos7.x86_64.rpm
+wget https://repo.gluu.org/centos/7/gluu-server-4.1.0-centos7.x86_64.rpm
+rpm -Uvh gluu-server-4.1.0-centos7.x86_64.rpm
 echo "updating the timeouts"
 sed -i "s/# jetty.server.stopTimeout=5000/jetty.server.stopTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
 sed -i "s/# jetty.http.connectTimeout=15000/jetty.http.connectTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
@@ -45,8 +67,49 @@ echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd start
 
 echo "downloading SIC tarball"
-wget https://sicqa.blob.core.windows.net/staging/SIC-AP-0.0.31.tgz
-tar -xvf SIC-AP-0.0.31.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
+tar -xvf SIC-AP-0.0.132.tgz
+tar -xvf SIC-Admintools-0.0.132.tgz
+
+cat > /opt/gluu-server/install/community-edition-setup/setup.properties <<EOF
+### IP Address of the interface to host IDP
+ip=${ip}
+
+### The hostname of the server
+hostname=${hostname}
+
+
+### Backend type. For opendj, both will be opendj
+ldap_type=opendj
+opendj_type=
+
+### This information is needed for self signed certificate
+orgName=nqtech
+countryCode=ca
+city=ottawa
+state=ON
+
+## Do NOT modify below this part unless you know what you're doing
+
+### The password to be used in Java KeyStore
+jksPass=Apple1995!
+
+### The cn=Directory Manager's password in ldap
+ldapPass=Apple1995!
+admin_email=info@nqtech.ca
+EOF
+
+ssh  -o IdentityFile=/etc/gluu/keys/gluu-console -o Port=60022 -o LogLevel=QUIET \
+                -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+                -o PubkeyAuthentication=yes root@localhost \
+            "/install/community-edition-setup/setup.py -n -f setup.properties"
+
+if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
+   echo "Gluu setup install failed. Aborting!"
+   exit
+fi
+
 
 exit
 
