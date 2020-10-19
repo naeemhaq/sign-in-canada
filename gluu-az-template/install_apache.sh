@@ -72,7 +72,7 @@ echo "enabling gluu server and logging into container"
 #tar -xvf SIC-AP-0.0.132.tgz
 #tar -xvf SIC-Admintools-0.0.132.tgz
 
-wget https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?sp=r&st=2020-10-19T00:29:58Z&se=2020-10-19T08:29:58Z&spr=https&sv=2019-12-12&sr=b&sig=JLEy%2BRnjvVvsv5r33h9KOUvPDNx2%2BAqlfgVzds6hcts%3D
+wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?sp=r&st=2020-10-19T00:29:58Z&se=2020-10-19T08:29:58Z&spr=https&sv=2019-12-12&sr=b&sig=JLEy%2BRnjvVvsv5r33h9KOUvPDNx2%2BAqlfgVzds6hcts%3D"
 
 cp setup.properties /opt/gluu-server/install/community-edition-setup/
 
