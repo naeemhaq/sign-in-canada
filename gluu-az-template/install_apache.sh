@@ -43,62 +43,38 @@ agree-tos = True
 #webroot-path = /var/www/html
 EOF
 
-echo "install certbot"
-yum -y install epel-release
-yum -y install snapd
-systemctl enable --now snapd.socket
-ln -s /var/lib/snapd/snap /snap
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum -y install certbot python2-certbot-apache
+#echo "install certbot"
+#yum -y install epel-release
+#yum -y install snapd
+#systemctl enable --now snapd.socket
+#ln -s /var/lib/snapd/snap /snap
+#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#yum -y install certbot python2-certbot-apache
 
-sudo certbot certonly --standalone
+#sudo certbot certonly --standalone
 
 echo "gluu server install begins"
 mkdir staging && cd staging
-#yum install -y gluu-server
+yum install -y gluu-server
 wget https://repo.gluu.org/centos/7/gluu-server-4.1.0-centos7.x86_64.rpm
 rpm -Uvh gluu-server-4.1.0-centos7.x86_64.rpm
-echo "updating the timeouts"
-sed -i "s/# jetty.server.stopTimeout=5000/jetty.server.stopTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
-sed -i "s/# jetty.http.connectTimeout=15000/jetty.http.connectTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
+#echo "updating the timeouts"
+#sed -i "s/# jetty.server.stopTimeout=5000/jetty.server.stopTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
+#sed -i "s/# jetty.http.connectTimeout=15000/jetty.http.connectTimeout=15000/g" /opt/gluu-server/opt/gluu/jetty/identity/start.ini
 
 echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
 
-echo "downloading SIC tarball"
-wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
-wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
-tar -xvf SIC-AP-0.0.132.tgz
-tar -xvf SIC-Admintools-0.0.132.tgz
+#echo "downloading SIC tarball"
+#wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+#wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
+#tar -xvf SIC-AP-0.0.132.tgz
+#tar -xvf SIC-Admintools-0.0.132.tgz
 
-cat > /opt/gluu-server/install/community-edition-setup/setup.properties <<EOF
-### IP Address of the interface to host IDP
-ip=${ip}
+wget https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?sp=r&st=2020-10-19T00:29:58Z&se=2020-10-19T08:29:58Z&spr=https&sv=2019-12-12&sr=b&sig=JLEy%2BRnjvVvsv5r33h9KOUvPDNx2%2BAqlfgVzds6hcts%3D
 
-### The hostname of the server
-hostname=${hostname}
-
-
-### Backend type. For opendj, both will be opendj
-ldap_type=opendj
-opendj_type=
-
-### This information is needed for self signed certificate
-orgName=nqtech
-countryCode=ca
-city=ottawa
-state=ON
-
-## Do NOT modify below this part unless you know what you're doing
-
-### The password to be used in Java KeyStore
-jksPass=Apple1995!
-
-### The cn=Directory Manager's password in ldap
-ldapPass=Apple1995!
-admin_email=info@nqtech.ca
-EOF
+cp setup.properties /opt/gluu-server/install/community-edition-setup/
 
 ssh  -o IdentityFile=/etc/gluu/keys/gluu-console -o Port=60022 -o LogLevel=QUIET \
                 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
