@@ -7,7 +7,7 @@ pool:
 
 
 variables:
-- group: dev
+- group: naeem-gluu
 
 steps:
 
