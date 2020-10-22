@@ -86,8 +86,10 @@ if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
    exit
 fi
 
-
-exit
+echo "setting up ACME script"
+curl https://get.acme.sh | sh
+exec bash
+acme.sh --issue --standalone -d $hostname
 
 #echo "downloading setup.py and updating properties file"
 #cd /opt/gluu-server/install/community-edition-setup
