@@ -89,7 +89,7 @@ fi
 echo "setting up ACME script"
 yum install -y socat
 curl https://get.acme.sh | sh
-exec bash
+#exec bash
 /.acme.sh/acme.sh --issue --standalone -d $hostname
 
 #echo "downloading setup.py and updating properties file"
