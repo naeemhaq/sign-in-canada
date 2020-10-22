@@ -87,9 +87,10 @@ if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
 fi
 
 echo "setting up ACME script"
+yum install -y socat
 curl https://get.acme.sh | sh
 exec bash
-acme.sh --issue --standalone -d $hostname
+/.acme.sh/acme.sh --issue --standalone -d $hostname
 
 #echo "downloading setup.py and updating properties file"
 #cd /opt/gluu-server/install/community-edition-setup

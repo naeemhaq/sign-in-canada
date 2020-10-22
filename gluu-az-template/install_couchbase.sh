@@ -43,6 +43,7 @@ curl -v http://localhost:8091/node/controller/setupServices -d services=kv%2cn1q
 curl -v http://localhost:8091/settings/web -d port=8091 -d username=Administrator -d password=deep_thoughtS!
 
 echo "setting up ACME script"
+yum install -y socat
 curl https://get.acme.sh | sh
 exec bash
-acme.sh --issue --standalone -d $hostname
+/.acme.sh/acme.sh --issue --standalone -d $hostname
