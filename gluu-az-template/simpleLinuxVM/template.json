@@ -139,11 +139,7 @@
       "setuppyAccountName": {
         "type": "string",
         "defaultValue": "gluuccrgdiag"
-      },
-        "setuppyContainerName": {
-          "type": "string",
-          "defaultValue": "install-gluu"
-        }
+      }
     },
     "variables": {
       "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
@@ -216,37 +212,15 @@
         ]
       },
       {
-        "apiVersion": "2018-02-14",
+        "apiVersion": "2016-10-01",
         "type": "Microsoft.KeyVault/vaults/secrets",
         "dependsOn": [
             "[concat('Microsoft.KeyVault/vaults/', variables('keyvaultName'))]"
         ],
         "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
         "properties": {
-            "value": "[listAccountSas('gluuccrgdiag', '2018-07-01', variables('accountSasProperties')).accountSasToken]"
+            "value": "[listAccountSas(parameters('setuppyAccountName'), '2018-07-01', variables('accountSasProperties')).accountSasToken]"
         }
-      },
-      {
-        "type": "Microsoft.Storage/storageAccounts",
-        "name": "gluuccrgdiag",
-        "apiVersion": "2015-06-15",
-        "location": "[parameters('location')]",
-        "properties": {
-          "accountType": "Standard_LRS"
-        },
-        "resources": [
-          {
-              "type": "blobServices/containers",
-              "apiVersion": "2018-03-01-preview",
-              "name": "[concat('default/', parameters('setuppyContainerName'))]",
-              "dependsOn": [
-                  "[parameters('setuppyAccountName')]"
-              ],
-              "properties": {
-                  "publicAccess": "Container"
-              }
-          }
-        ]
       },
       {
         "type": "Microsoft.Storage/storageAccounts",
@@ -259,7 +233,7 @@
       },
       {
         "type": "Microsoft.Network/networkInterfaces",
-        "apiVersion": "2020-06-01",
+        "apiVersion": "2020-05-01",
         "name": "[variables('networkInterfaceName')]",
         "location": "[parameters('location')]",
         "dependsOn": [
@@ -289,7 +263,7 @@
       },
       {
         "type": "Microsoft.Network/networkSecurityGroups",
-        "apiVersion": "2020-06-01",
+        "apiVersion": "2020-05-01",
         "name": "[parameters('networkSecurityGroupName')]",
         "location": "[parameters('location')]",
         "properties": {
@@ -327,7 +301,7 @@
       },
       {
         "type": "Microsoft.Network/virtualNetworks",
-        "apiVersion": "2020-06-01",
+        "apiVersion": "2020-05-01",
         "name": "[parameters('virtualNetworkName')]",
         "location": "[parameters('location')]",
         "properties": {
@@ -368,7 +342,7 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines",
-        "apiVersion": "2020-06-01",
+        "apiVersion": "2020-05-01",
         "name": "[parameters('vmName')]",
         "location": "[parameters('location')]",
         "dependsOn": [
@@ -419,7 +393,7 @@
       {
         "name": "[concat('shutdown-computevm-', parameters('vmName'))]",
         "type": "Microsoft.DevTestLab/schedules",
-        "apiVersion": "2017-04-26-preview",
+        "apiVersion": "2018-09-15",
         "location": "[parameters('location')]",
         "dependsOn": [
           "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
@@ -435,7 +409,7 @@
           "notificationSettings": {
             "status": "[parameters('autoShutdownNotificationStatus')]",
             "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
-            "timeInMinutes": "30",
+            "timeInMinutes": 30,
             "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
           }
         }
