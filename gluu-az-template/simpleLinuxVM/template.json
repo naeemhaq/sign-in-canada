@@ -213,7 +213,7 @@
         "dependsOn": [
             "[concat('Microsoft.KeyVault/vaults/', variables('keyvaultName'))]"
         ],
-        "name": "[concat(parameters('keyVaultName'), '/', 'StorageSaSToken')]",
+        "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
         "properties": {
             "value": "[listAccountSas('gluuccrgdiag', '2018-07-01', parameters('accountSasProperties')).accountSasToken]"
         }
