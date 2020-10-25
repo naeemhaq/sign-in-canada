@@ -135,7 +135,15 @@
       "homeTrafficRule": {
         "type": "string",
         "defaultValue": "174.112.28.92/32"
-      }
+      },
+      "setuppyAccountName": {
+        "type": "string",
+        "defaultValue": "gluuccrgdiag"
+      },
+        "setuppyContainerName": {
+          "type": "string",
+          "defaultValue": "install-gluu"
+        }
     },
     "variables": {
       "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
@@ -230,9 +238,9 @@
           {
               "type": "blobServices/containers",
               "apiVersion": "2018-03-01-preview",
-              "name": "[concat('default/', parameters('Container1Name'))]",
+              "name": "[concat('default/', parameters('setuppyContainerName'))]",
               "dependsOn": [
-                  "[parameters('StorageAccountName')]"
+                  "[parameters('setuppyAccountName')]"
               ],
               "properties": {
                   "publicAccess": "Container"
