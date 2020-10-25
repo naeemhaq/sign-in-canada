@@ -19,43 +19,21 @@ sed -i.bkp "$ a $privateIP $hostname" /etc/hosts
 echo > /etc/hostname
 echo $hostname > /etc/hostname
 
-# certbot ini file. 
-cat > /etc/letsencrypt/cli.ini <<EOF
-# Uncomment to use the staging/testing server - avoids rate limiting.
-server = https://acme-staging.api.letsencrypt.org/directory
- 
-# Use a 4096 bit RSA key instead of 2048.
-rsa-key-size = 4096
- 
-# Set email and domains.
-email = info@nqteh.ca
-domains = ${hostname}
- 
-# Text interface.
-text = True
-# No prompts.
-non-interactive = True
-# Suppress the Terms of Service agreement interaction.
-agree-tos = True
- 
-# Use the webroot authenticator.
-#authenticator = webroot
-#webroot-path = /var/www/html
-EOF
+echo "install azure cli"
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
 
-#echo "install certbot"
-#yum -y install epel-release
-#yum -y install snapd
-#systemctl enable --now snapd.socket
-#ln -s /var/lib/snapd/snap /snap
-#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-#yum -y install certbot python2-certbot-apache
+sh -c 'echo -e "[azure-cli]
+name=Azure CLI
+baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
 
-#sudo certbot certonly --standalone
+yum install -y azure-cli
+yum install -y jq
 
 echo "gluu server install begins"
 mkdir staging && cd staging
-yum install -y gluu-server
 wget https://repo.gluu.org/centos/7/gluu-server-4.1.0-centos7.x86_64.rpm
 rpm -Uvh gluu-server-4.1.0-centos7.x86_64.rpm
 #echo "updating the timeouts"
@@ -91,15 +69,4 @@ yum install -y socat
 curl https://get.acme.sh | sh
 #exec bash
 /.acme.sh/acme.sh --issue --standalone -d $hostname
-
-#echo "downloading setup.py and updating properties file"
-#cd /opt/gluu-server/install/community-edition-setup
-#wget https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/template2/setup.properties
-#sed -i "s/10.1.0.5/$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)/g" setup.properties
-
-#cd
-
-#/sbin/gluu-serverd login
-#cd /install/community-edition-setup
-#./setup.py -psn -f setup.properties 
 

@@ -142,6 +142,16 @@
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
       "osDiskType": "Standard_LRS",
+      "keyvaultName": "[concat(resourceGroup().name, '-keyvault']",
+      "accountSasProperties": {
+        "type": "object",
+        "defaultValue": {
+            "signedServices": "b",
+            "signedPermission": "rw",
+            "signedExpiry": "2020-10-26T00:00:01Z",
+            "signedResourceTypes": "o"
+        }
+      },
       "linuxConfiguration": {
         "disablePasswordAuthentication": true,
         "ssh": {
@@ -155,6 +165,81 @@
       }
     },
     "resources": [
+      {
+        "type": "Microsoft.KeyVault/vaults",
+        "name": "[variables('keyvaultName')]",
+        "apiVersion": "2016-10-01",
+        "location": "[parameters('location')]",
+        "properties": {
+          "sku": {
+            "family": "A",
+            "name": "standard"
+          },
+          "tenantId": "[subscription().tenantid]",
+          "accessPolicies": [
+          {
+              "tenantId": "[subscription().tenantid]",
+              "objectId": "[reference(resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')),'2019-08-01', 'full').identity.principalId]",
+              "permissions": {
+                "keys": [
+                  "get",
+                  "list",
+                  "create",
+                  "update"
+                ],
+                "secrets": [
+                  "get"
+                ],
+                "certificates": [
+                  "get",
+                  "list",
+                  "create",
+                  "update"
+                ]
+              }
+            }
+          ],
+          "enabledForDeployment": false,
+          "enabledForDiskEncryption": false,
+          "enabledForTemplateDeployment": false
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+        ]
+      },
+      {
+        "apiVersion": "2018-02-14",
+        "type": "Microsoft.KeyVault/vaults/secrets",
+        "dependsOn": [
+            "[concat('Microsoft.KeyVault/vaults/', variables('keyvaultName'))]"
+        ],
+        "name": "[concat(parameters('keyVaultName'), '/', 'StorageSaSToken')]",
+        "properties": {
+            "value": "[listAccountSas('gluuccrgdiag', '2018-07-01', parameters('accountSasProperties')).accountSasToken]"
+        }
+      },
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "gluuccrgdiag",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "accountType": "Standard_LRS"
+        },
+        "resources": [
+          {
+              "type": "blobServices/containers",
+              "apiVersion": "2018-03-01-preview",
+              "name": "[concat('default/', parameters('Container1Name'))]",
+              "dependsOn": [
+                  "[parameters('StorageAccountName')]"
+              ],
+              "properties": {
+                  "publicAccess": "Container"
+              }
+          }
+        ]
+      },
       {
         "type": "Microsoft.Storage/storageAccounts",
         "name": "[parameters('storageName')]",
