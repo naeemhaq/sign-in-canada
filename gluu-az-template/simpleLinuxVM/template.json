@@ -215,7 +215,7 @@
         ],
         "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
         "properties": {
-            "value": "[listAccountSas('gluuccrgdiag', '2018-07-01', parameters('accountSasProperties')).accountSasToken]"
+            "value": "[listAccountSas('gluuccrgdiag', '2018-07-01', variables('accountSasProperties')).accountSasToken]"
         }
       },
       {
