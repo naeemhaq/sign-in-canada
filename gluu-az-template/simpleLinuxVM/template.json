@@ -142,7 +142,7 @@
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
       "osDiskType": "Standard_LRS",
-      "keyvaultName": "[concat(resourceGroup().name, '-keyvault']",
+      "keyvaultName": "[concat(resourceGroup().name, '-keyvault')]",
       "accountSasProperties": {
         "type": "object",
         "defaultValue": {
