@@ -50,7 +50,16 @@ echo "enabling gluu server and logging into container"
 #tar -xvf SIC-AP-0.0.132.tgz
 #tar -xvf SIC-Admintools-0.0.132.tgz
 
-wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?sp=r&st=2020-10-19T00:29:58Z&se=2020-10-19T08:29:58Z&spr=https&sv=2019-12-12&sr=b&sig=JLEy%2BRnjvVvsv5r33h9KOUvPDNx2%2BAqlfgVzds6hcts%3D"
+API_VER='7.0'
+# Obtain an access token
+TOKEN=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true | jq -r '.access_token')
+
+RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/resourceGroupName?api-version=2017-08-01&format=text' -H Metadata:true | jq -r '.value')
+KEYVAULT="${RGNAME}-keyvault"
+
+SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/StorageSaSToken?api-version=${API_VER} | jq -r '.value')
+
+wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?${SASTOKEN}"
 
 cp setup.properties /opt/gluu-server/install/community-edition-setup/
 
