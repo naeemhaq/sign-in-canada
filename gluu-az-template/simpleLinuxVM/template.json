@@ -198,7 +198,7 @@
           "accessPolicies": [
           {
               "tenantId": "[subscription().tenantid]",
-              "objectId": "[reference(resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')),'2019-08-01', 'full').identity.principalId]",
+              "objectId": "[reference(resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')),'2020-06-01', 'full').identity.principalId]",
               "permissions": {
                 "keys": [
                   "get",
