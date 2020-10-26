@@ -208,7 +208,8 @@
                 ],
                 "secrets": [
                   "get",
-                  "set"
+                  "set",
+                  "list"
                 ],
                 "certificates": [
                   "get",

@@ -29,6 +29,8 @@ sh -c 'echo "" >> /etc/sysctl.conf'
 sh -c 'echo "#Set swappiness to 0 to avoid swapping" >> /etc/sysctl.conf'
 sh -c 'echo "vm.swappiness = 0" >> /etc/sysctl.conf'
 
+yum install -y jq 
+
 echo "install couchbase"  
 curl -O https://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-x86_64.rpm
 sudo rpm -i ./couchbase-release-1.0-x86_64.rpm

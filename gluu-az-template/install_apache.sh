@@ -55,7 +55,7 @@ API_VER='7.0'
 TOKEN=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true | jq -r '.access_token')
 
 RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/resourceGroupName?api-version=2017-08-01&format=text' -H Metadata:true | jq -r '.value')
-KEYVAULT="${RGNAME}-keyvault"
+KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
 
 SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/StorageSaSToken?api-version=${API_VER} | jq -r '.value')
 
