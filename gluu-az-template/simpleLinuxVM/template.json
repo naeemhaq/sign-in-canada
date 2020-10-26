@@ -139,12 +139,17 @@
       "setuppyAccountName": {
         "type": "string",
         "defaultValue": "gluuccrgdiag"
+      },
+      "setuppyRGName": {
+        "type": "string",
+        "defaultValue": "gluu-cc-rg"
       }
     },
     "variables": {
       "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
+      "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]"
       "osDiskType": "Standard_LRS",
       "keyvaultName": "[concat(resourceGroup().name, '-keyvault')]",
       "accountSasProperties": {
@@ -192,7 +197,8 @@
                   "update"
                 ],
                 "secrets": [
-                  "get"
+                  "get",
+                  "set"
                 ],
                 "certificates": [
                   "get",
@@ -219,7 +225,7 @@
         ],
         "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
         "properties": {
-            "value": "[listAccountSas(parameters('setuppyAccountName'), '2018-07-01', variables('accountSasProperties')).accountSasToken]"
+            "value": "[listAccountSas(variables('setuppropStorage'), '2018-07-01', variables('accountSasProperties')).accountSasToken]"
         }
       },
       {
