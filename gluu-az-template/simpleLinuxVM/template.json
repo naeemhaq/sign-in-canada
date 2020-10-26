@@ -153,7 +153,7 @@
       "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
-      "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]"
+      "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]",
       "osDiskType": "Standard_LRS",
       "keyvaultName": "[concat(resourceGroup().name, '-keyvault')]",
       "serviceSasFunctionValues": {
