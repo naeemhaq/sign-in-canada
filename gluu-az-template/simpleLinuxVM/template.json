@@ -140,15 +140,13 @@
         "type": "string",
         "defaultValue": "gluuccrgdiag"
       },
-<<<<<<< HEAD
       "setuppyRGName": {
         "type": "string",
         "defaultValue": "gluu-cc-rg"
-=======
+      },
       "containerName": {
         "type": "string",
         "defaultValue": "gluu-install"
->>>>>>> 8e4cea33daf039ad47538d29ff2f20fe5be6e7db
       }
     },
     "variables": {
@@ -237,11 +235,7 @@
         ],
         "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
         "properties": {
-<<<<<<< HEAD
-            "value": "[listAccountSas(variables('setuppropStorage'), '2018-07-01', variables('accountSasProperties')).accountSasToken]"
-=======
-            "value": "[listServiceSas(parameters('setuppyAccountName'), '2018-07-01', variables('serviceSasFunctionValues')).serviceSasToken]"
->>>>>>> 8e4cea33daf039ad47538d29ff2f20fe5be6e7db
+            "value": "[listServiceSas(variables('setuppropStorage'), '2018-07-01', variables('serviceSasFunctionValues')).serviceSasToken]"
         }
       },
       {
