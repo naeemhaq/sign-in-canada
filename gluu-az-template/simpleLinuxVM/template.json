@@ -140,9 +140,15 @@
         "type": "string",
         "defaultValue": "gluuccrgdiag"
       },
+<<<<<<< HEAD
       "setuppyRGName": {
         "type": "string",
         "defaultValue": "gluu-cc-rg"
+=======
+      "containerName": {
+        "type": "string",
+        "defaultValue": "gluu-install"
+>>>>>>> 8e4cea33daf039ad47538d29ff2f20fe5be6e7db
       }
     },
     "variables": {
@@ -152,6 +158,12 @@
       "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]"
       "osDiskType": "Standard_LRS",
       "keyvaultName": "[concat(resourceGroup().name, '-keyvault')]",
+      "serviceSasFunctionValues": {
+        "canonicalizedResource": "[concat('/blob/', parameters('setuppyAccountName'), '/', parameters('containerName'))]",
+        "signedResource": "c",
+        "signedPermission": "rw",
+        "signedExpiry": "2020-10-29T00:00:00Z"
+      },
       "accountSasProperties": {
         "type": "object",
         "defaultValue": {
@@ -225,7 +237,11 @@
         ],
         "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
         "properties": {
+<<<<<<< HEAD
             "value": "[listAccountSas(variables('setuppropStorage'), '2018-07-01', variables('accountSasProperties')).accountSasToken]"
+=======
+            "value": "[listServiceSas(parameters('setuppyAccountName'), '2018-07-01', variables('serviceSasFunctionValues')).serviceSasToken]"
+>>>>>>> 8e4cea33daf039ad47538d29ff2f20fe5be6e7db
         }
       },
       {
@@ -330,7 +346,7 @@
       },
       {
         "type": "Microsoft.Network/publicIpAddresses",
-        "apiVersion": "2020-06-01",
+        "apiVersion": "2020-05-01",
         "name": "[variables('publicIpAddressName')]",
         "location": "[parameters('location')]",
         "sku": {
@@ -348,7 +364,7 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines",
-        "apiVersion": "2020-05-01",
+        "apiVersion": "2019-07-01",
         "name": "[parameters('vmName')]",
         "location": "[parameters('location')]",
         "dependsOn": [
