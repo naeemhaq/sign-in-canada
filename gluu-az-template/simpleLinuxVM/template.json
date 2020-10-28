@@ -156,6 +156,7 @@
       "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]",
       "osDiskType": "Standard_LRS",
       "keyvaultName": "[concat(resourceGroup().name, '-keyvault')]",
+      "secretName": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
       "serviceSasFunctionValues": {
         "canonicalizedResource": "[concat('/blob/', parameters('setuppyAccountName'), '/', parameters('containerName'))]",
         "signedResource": "c",
@@ -234,7 +235,7 @@
         "dependsOn": [
             "[concat('Microsoft.KeyVault/vaults/', variables('keyvaultName'))]"
         ],
-        "name": "[concat(variables('keyvaultName'), '/', 'StorageSaSToken')]",
+        "name": "[variables('secretName')]",
         "properties": {
             "value": "[listServiceSas(variables('setuppropStorage'), '2018-07-01', variables('serviceSasFunctionValues')).serviceSasToken]"
         }
@@ -430,13 +431,14 @@
             "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
           }
         }
+      },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(parameters('vmName'),'/newuserscript')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyvaultName'), '/', 'StorageSaSToken')]"
+          "[concat('Microsoft.KeyVault/vaults/', variables('keyvaultName'))]"
         ],
         "properties": {
           "publisher": "Microsoft.Azure.Extensions",

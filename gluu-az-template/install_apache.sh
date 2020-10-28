@@ -30,7 +30,15 @@ gpgcheck=1
 gpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
 
 yum install -y azure-cli
+echo "installing JQ"
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum install -y jq
+
+echo "setting up ACME script"
+yum install -y socat
+curl https://get.acme.sh | sh
+#exec bash
+/.acme.sh/acme.sh --issue --standalone -d $hostname
 
 echo "gluu server install begins"
 mkdir staging && cd staging
@@ -44,17 +52,17 @@ echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
 
-#echo "downloading SIC tarball"
-#wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
-#wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
-#tar -xvf SIC-AP-0.0.132.tgz
-#tar -xvf SIC-Admintools-0.0.132.tgz
+echo "downloading SIC tarball"
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
+tar -xvf SIC-AP-0.0.132.tgz
+tar -xvf SIC-Admintools-0.0.132.tgz
 
 API_VER='7.0'
 # Obtain an access token
 TOKEN=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true | jq -r '.access_token')
 
-RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/resourceGroupName?api-version=2017-08-01&format=text' -H Metadata:true | jq -r '.value')
+RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2020-06-01&format=text' -H Metadata:true)
 KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
 
 SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/StorageSaSToken?api-version=${API_VER} | jq -r '.value')
@@ -72,10 +80,4 @@ if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
    echo "Gluu setup install failed. Aborting!"
    exit
 fi
-
-echo "setting up ACME script"
-yum install -y socat
-curl https://get.acme.sh | sh
-#exec bash
-/.acme.sh/acme.sh --issue --standalone -d $hostname
 
