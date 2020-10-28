@@ -32,6 +32,12 @@ gpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azu
 yum install -y azure-cli
 yum install -y jq
 
+echo "setting up ACME script"
+yum install -y socat
+curl https://get.acme.sh | sh
+#exec bash
+/.acme.sh/acme.sh --issue --standalone -d $hostname
+
 echo "gluu server install begins"
 mkdir staging && cd staging
 wget https://repo.gluu.org/centos/7/gluu-server-4.1.0-centos7.x86_64.rpm
@@ -44,11 +50,11 @@ echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
 
-#echo "downloading SIC tarball"
-#wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
-#wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
-#tar -xvf SIC-AP-0.0.132.tgz
-#tar -xvf SIC-Admintools-0.0.132.tgz
+echo "downloading SIC tarball"
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
+tar -xvf SIC-AP-0.0.132.tgz
+tar -xvf SIC-Admintools-0.0.132.tgz
 
 API_VER='7.0'
 # Obtain an access token
@@ -72,10 +78,4 @@ if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
    echo "Gluu setup install failed. Aborting!"
    exit
 fi
-
-echo "setting up ACME script"
-yum install -y socat
-curl https://get.acme.sh | sh
-#exec bash
-/.acme.sh/acme.sh --issue --standalone -d $hostname
 
