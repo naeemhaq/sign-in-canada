@@ -438,7 +438,7 @@
         "apiVersion": "2015-05-01-preview",
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[concat('Microsoft.KeyVault/vaults/secrets/', variables('secretName'))]"
+          "[concat('Microsoft.KeyVault/vaults/', variables('keyvaultName'))]"
         ],
         "properties": {
           "publisher": "Microsoft.Azure.Extensions",
