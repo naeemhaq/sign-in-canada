@@ -430,14 +430,13 @@
             "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
           }
         }
-      },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(parameters('vmName'),'/newuserscript')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+          "[concat('Microsoft.KeyVault/vaults/secrets', variables('keyvaultName'), '/', 'StorageSaSToken')]"
         ],
         "properties": {
           "publisher": "Microsoft.Azure.Extensions",
