@@ -13,9 +13,6 @@
         "type": "string",
         "defaultValue": "sh install.sh"
       },
-      "couchbasePassword": {
-        "type": "string"
-      },
       "vmName": {
         "type": "string",
         "defaultValue": "simpleLinuxVM",
@@ -452,7 +449,7 @@
             "fileUris": [
               "[parameters('_artifactsLocation')]"
             ],
-            "commandToExecute": "[concat(parameters('commandToExec'), ' ', parameters('couchbasePassword'))]"
+            "commandToExecute": "[parameters('commandToExec')]"
           }
         }
       }
