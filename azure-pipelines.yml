@@ -6,7 +6,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
-- job: setup-couchbase
+- job: setup_couchbase
   variables:
   - group: couchbase
   
@@ -25,8 +25,8 @@ jobs:
       overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)" -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
       
-- job: update-setup-props
-  dependsOn: setup-couchbase
+- job: update_setup_props
+  dependsOn: setup_couchbase
   variables:
   - group: couchbase
 
@@ -66,8 +66,8 @@ jobs:
       inlineScript: 'az storage blob upload --account-name gluuccrgdiag --container-name gluu-install --file setup.properties --name setup.properties'
     displayName: 'Uploading to blob'
 
-- job: setup-gluu-server 
-  dependsOn: update-setup-props
+- job: setup_gluu_server 
+  dependsOn: update_setup_props
   variables: 
   - group: naeem-gluu
   steps:
