@@ -52,7 +52,7 @@ jobs:
       cat setup.properties |grep couchbase
       echo $(commandToExec) | cut -d ' ' -f 3 > tmpfile2 && cbpass=$(cat tmpfile2) && echo $cbpass
       echo "running sed command"
-      sed -i "/cb_password/ s/.*/$cbpass/g" setup.properties
+      sed -i "/cb_password/ s/.*/cb_password=$cbpass/g" setup.properties
       echo "spit out password"
       cat setup.properties |grep cb_password 
       echo "the task is done"   
