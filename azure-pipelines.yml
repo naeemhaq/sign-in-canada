@@ -44,7 +44,7 @@ jobs:
     displayName: 'Couchbase IP and download setup.props blob'
 
   - script: |
-      echo consume private ip variable 
+      echo update couchbase private ip 
       pvtIPadd=$(cat tmpfile1)
       echo $pvtIPadd
       ls -al 
