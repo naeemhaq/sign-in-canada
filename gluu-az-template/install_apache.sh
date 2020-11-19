@@ -86,6 +86,5 @@ if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
    exit
 fi
 
-cp /.acme/$hostname/ .
-
-curl -s -H "Authorization: Bearer ${TOKEN}" -F file=@"httpd" https://${RGNAME}-keyvault.vault.azure.net/certificates/httpd/import?api-version=7.1
+cd ..
+# curl -s -H "Authorization: Bearer ${TOKEN}" -F file=@"httpd" https://${RGNAME}-keyvault.vault.azure.net/certificates/httpd/import?api-version=7.1
