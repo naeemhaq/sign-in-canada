@@ -61,18 +61,21 @@ tar -xvf SIC-AP-0.0.132.tgz
 tar -xvf SIC-Admintools-0.0.132.tgz
 
 API_VER='7.0'
-# Obtain an access token and upload cert file
+echo "Obtain an access token and upload cert file"
 TOKEN=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true | jq -r '.access_token')
-
+echo "token: ${TOKEN}"
 RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2020-06-01&format=text' -H Metadata:true)
+echo $RGNAME
+
 KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
 
 SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/StorageSaSToken?api-version=${API_VER} | jq -r '.value')
-
+echo "SASToken: ${SASTOKEN}"
 wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?${SASTOKEN}"
+ls -al 
 
 echo "update hostname of the gluu server"
-sed -i "/hostname=/ s/.*/hostname=$hostname/g" setup.properties
+sed -i "/^hostname=/ s/.*/hostname=$hostname/g" setup.properties
 
 cp setup.properties /opt/gluu-server/install/community-edition-setup/
 
