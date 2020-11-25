@@ -92,8 +92,8 @@ fi
 cd ..
 # curl -s -H "Authorization: Bearer ${TOKEN}" -F file=@"httpd" https://${RGNAME}-keyvault.vault.azure.net/certificates/httpd/import?api-version=7.1
 
-# echo "downloading SIC tarball"
-# wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
-# wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
-# tar -xvf SIC-AP-0.0.132.tgz
-# tar -xvf SIC-Admintools-0.0.132.tgz
+echo "downloading SIC tarball"
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.198.tgz
+tar -xvf SIC-AP-0.0.198.tgz
+tar -xvf SIC-Admintools-0.0.132.tgz
