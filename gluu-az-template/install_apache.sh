@@ -54,12 +54,6 @@ echo "enabling gluu server and logging into container"
 /sbin/gluu-serverd enable
 /sbin/gluu-serverd start
 
-echo "downloading SIC tarball"
-wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
-wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
-tar -xvf SIC-AP-0.0.132.tgz
-tar -xvf SIC-Admintools-0.0.132.tgz
-
 API_VER='7.0'
 echo "Obtain an access token and upload cert file"
 TOKEN=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true | jq -r '.access_token')
@@ -79,6 +73,14 @@ sed -i "/^hostname=/ s/.*/hostname=$hostname/g" setup.properties
 
 cp setup.properties /opt/gluu-server/install/community-edition-setup/
 
+echo "copying certs to gluu container"
+KV_DIR=/run/keyvault/certs
+mkdir $KV_DIR
+cp /.acme.sh/$hostname/$hostname.key /opt/gluu-server/$KV_DIR
+cp /.acme.sh/$hostname/$hostname.cer /opt/gluu-server/$KV_DIR
+cp /.acme.sh/$hostname/fullchain.cer /opt/gluu-server/$KV_DIR
+cat $hostname > /opt/gluu-server/$KV_DIR/hostname
+
 ssh  -o IdentityFile=/etc/gluu/keys/gluu-console -o Port=60022 -o LogLevel=QUIET \
                 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
                 -o PubkeyAuthentication=yes root@localhost \
@@ -91,3 +93,9 @@ fi
 
 cd ..
 # curl -s -H "Authorization: Bearer ${TOKEN}" -F file=@"httpd" https://${RGNAME}-keyvault.vault.azure.net/certificates/httpd/import?api-version=7.1
+
+# echo "downloading SIC tarball"
+# wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+# wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.132.tgz
+# tar -xvf SIC-AP-0.0.132.tgz
+# tar -xvf SIC-Admintools-0.0.132.tgz
