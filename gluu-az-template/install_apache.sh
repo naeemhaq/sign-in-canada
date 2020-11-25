@@ -74,12 +74,10 @@ sed -i "/^hostname=/ s/.*/hostname=$hostname/g" setup.properties
 cp setup.properties /opt/gluu-server/install/community-edition-setup/
 
 echo "copying certs to gluu container"
-KV_DIR=/run/keyvault/certs
-mkdir $KV_DIR
-cp /.acme.sh/$hostname/$hostname.key /opt/gluu-server/$KV_DIR
-cp /.acme.sh/$hostname/$hostname.cer /opt/gluu-server/$KV_DIR
-cp /.acme.sh/$hostname/fullchain.cer /opt/gluu-server/$KV_DIR
-cat $hostname > /opt/gluu-server/$KV_DIR/hostname
+KV_DIR=/opt/gluu-server/install/keyvault/certs
+mkdir -p $KV_DIR
+cp /.acme.sh/$hostname/* $KV_DIR
+cat $hostname > $KV_DIR/hostname_
 
 ssh  -o IdentityFile=/etc/gluu/keys/gluu-console -o Port=60022 -o LogLevel=QUIET \
                 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
