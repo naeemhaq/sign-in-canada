@@ -93,10 +93,10 @@ fi
 sed -i "/^loadData=True/ s/.*/loadData=False/g" setup.properties
 
 echo "downloading SIC tarball"
-wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.132.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.20.tgz
 wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.198.tgz
 
-tar -xvf SIC-Admintools-0.0.132.tgz
+tar -xvf SIC-Admintools-0.0.20.tgz
 
 cp administration/software/install.sh .
 chmod +x install.sh
