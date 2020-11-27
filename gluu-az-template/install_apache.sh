@@ -88,8 +88,6 @@ if [ ! -f /opt/gluu-server/install/community-edition-setup/setup.py ] ; then
    echo "Gluu setup install failed. Aborting!"
    exit
 fi
-
-cd ..
 # curl -s -H "Authorization: Bearer ${TOKEN}" -F file=@"httpd" https://${RGNAME}-keyvault.vault.azure.net/certificates/httpd/import?api-version=7.1
 
 echo "downloading SIC tarball"
