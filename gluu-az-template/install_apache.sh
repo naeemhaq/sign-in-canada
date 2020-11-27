@@ -102,7 +102,7 @@ tar -xvf SIC-Admintools-0.0.20.tgz
 pwd 
 ls -al 
 
-cp administration/software/install.sh .
+cp software/install.sh .
 chmod +x install.sh
 cat > install.params <<EOF
 STAGING_URL=https://sicqa.blob.core.windows.net/staging
