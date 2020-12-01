@@ -98,9 +98,7 @@ wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.24.tgz
 wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.201.tgz
 
 tar -xvf SIC-Admintools-0.0.24.tgz
-
-pwd 
-ls -al 
+pwd
 
 cp software/install.sh .
 chmod +x install.sh
@@ -110,4 +108,7 @@ KEYVAULT_URL=${KEYVAULT}
 METADATA_URL=https://sicqa.blob.core.windows.net/saml/SIC-Nonprod-signed.xml
 EOF
 
+pwd
+ls -al 
+echo "begining to run SIC tarball"
 ./install.sh SIC-AP-0.0.201
