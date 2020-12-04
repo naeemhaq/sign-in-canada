@@ -66,6 +66,9 @@ KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
 SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/StorageSaSToken?api-version=${API_VER} | jq -r '.value')
 echo "SASToken: ${SASTOKEN}"
 wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?${SASTOKEN}"
+
+echo "make backup of setup.props"
+cp -n setup.properties{,.bak}
 ls -al 
 pwd
 
@@ -111,4 +114,4 @@ EOF
 pwd
 ls -al 
 echo "begining to run SIC tarball"
-./install.sh SIC-AP-0.0.202
+sh install.sh SIC-AP-0.0.202
