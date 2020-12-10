@@ -98,7 +98,7 @@ sed -i "/^loadData=True/ s/.*/loadData=False/g" setup.properties
 
 echo "downloading SIC tarball"
 wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-Admintools-0.0.26.tgz
-wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.202.tgz
+wget https://gluuccrgdiag.blob.core.windows.net/gluu/SIC-AP-0.0.203.tgz
 
 tar -xvf SIC-Admintools-0.0.26.tgz
 pwd
@@ -114,4 +114,4 @@ EOF
 pwd
 ls -al 
 echo "begining to run SIC tarball"
-sh install.sh SIC-AP-0.0.202
+sh install.sh SIC-AP-0.0.203
