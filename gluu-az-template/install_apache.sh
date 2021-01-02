@@ -111,6 +111,8 @@ KEYVAULT_URL=${KEYVAULT}
 METADATA_URL=https://sicqa.blob.core.windows.net/saml/SIC-Nonprod-signed.xml
 EOF
 
+echo "copying output folder from container"
+cp -r /opt/gluu-server/install/community-edition-setup/output/ .
 pwd
 ls -al 
 echo "begining to run SIC tarball"
