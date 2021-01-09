@@ -188,7 +188,9 @@
         "name": "grant-access",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2019-10-01",
+        "subscriptionID": "[subscription().tenantId]",
         "resourceGroup": "keyvault-test",
+        "location": "East US",
         "dependsOn": [
           "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
         ],
