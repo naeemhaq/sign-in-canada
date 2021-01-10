@@ -169,15 +169,15 @@
                 "parameters": {
                     "setuppyAccountName": {
                         "type": "string",
-                        "defaultValue": "siccommonstorage"
+                        "defaultValue": "gluuccrgdiag"
                     },
                     "setuppyRGName": {
                         "type": "string",
-                        "defaultValue": "sic-common-rg"
+                        "defaultValue": "gluu-cc-rg"
                     },
                     "containerName": {
                         "type": "string",
-                        "defaultValue": "sic-pipeline-artifacts-private"
+                        "defaultValue": "gluu-install"
                     },
                     "baseTime":{
                         "type":"string",
