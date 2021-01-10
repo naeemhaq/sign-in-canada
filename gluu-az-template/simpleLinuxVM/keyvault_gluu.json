@@ -1,0 +1,88 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "setuppyAccountName": {
+            "type": "string",
+            "defaultValue": "gluuccrgdiag"
+        },
+        "setuppyRGName": {
+            "type": "string",
+            "defaultValue": "gluu-cc-rg"
+        },
+        "containerName": {
+            "type": "string",
+            "defaultValue": "gluu-install"
+        },
+        "baseTime":{
+            "type":"string",
+            "defaultValue": "[utcNow('u')]"
+        },
+        "keyvaultName": {
+            "type": "string",
+            "defaultValue": "v-sic-j33t"
+        },
+        "vmName": {
+            "type": "string",
+            "defaultValue": "vmName"
+        },
+        "vmResouceGroupName": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]"
+        }       
+    },
+    "variables": {
+        "add1Hour": "[dateTimeAdd(parameters('baseTime'), 'PT2H')]",
+        "secretName": "[concat(parameters('keyvaultName'), '/', 'StorageSaSToken')]",
+        "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]",
+        "serviceSasFunctionValues": {
+            "canonicalizedResource": "[concat('/blob/', parameters('setuppyAccountName'), '/', parameters('containerName'))]",
+            "signedResource": "c",
+            "signedPermission": "rw",
+            "signedExpiry": "[variables('add1Hour')]"
+        }
+    },
+    "resources": [
+    {
+        "type": "Microsoft.KeyVault/vaults/accessPolicies",
+        "name": "[concat(parameters('keyvaultName'), '/add')]",
+        "apiVersion": "2019-09-01",
+        "properties": {
+            "accessPolicies": [
+                {
+                    "tenantId": "[subscription().tenantId]",
+                    "objectId": "[reference(resourceId(parameters('vmResouceGroupName'), 'Microsoft.Compute/virtualMachines', parameters('vmName')),'2020-06-01', 'full').identity.principalId]",
+                    "permissions": {
+                        "keys": [
+                            "get",
+                            "list",
+                            "create",
+                            "update"
+                        ],
+                        "secrets": [
+                            "get",
+                            "set",
+                            "list"
+                        ],
+                        "certificates": [
+                            "get",
+                            "list",
+                            "create",
+                            "update",
+                            "import"
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "apiVersion": "2016-10-01",
+        "type": "Microsoft.KeyVault/vaults/secrets",
+        "name": "[variables('secretName')]",
+        "properties": {
+            "value": "[listServiceSas(variables('setuppropStorage'), '2018-07-01', variables('serviceSasFunctionValues')).serviceSasToken]"
+        }
+    }
+    ]
+  }

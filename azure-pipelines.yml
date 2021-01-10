@@ -1,4 +1,4 @@
-# Starter pipeline
+# Pipeline to setup Gluu and Couchbase VMs and setup access policies on the existing keyvault
 trigger: 
 - master
  
@@ -19,11 +19,42 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(rgName)
       location: 'Canada Central'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/template_.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/parameters.json'
-      overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)" -homeTrafficRule $(homeTrafficRule)'
+      templateLocation: "Linked artifact"
+      csmFileLink: '$(System.DefaultWorkingDirectory)/template_.json'
+      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/parameters.json'
+      overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
+      deploymentOutputs: arm_outputs
+      
+  - pwsh: $(System.DefaultWorkingDirectory)/parse_arm_deployment_output.ps1 -ArmOutputString '$(arm_outputs)' -MakeOutput -ErrorAction Stop
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
+      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'sic-common-rg'
+      location: 'Canada Central'
+      templateLocation: "Linked artifact"
+      csmFileLink: '$(System.DefaultWorkingDirectory)/keyvault_gluu.json'
+      overrideParameters: '-vmName $(vmName) -vmResouceGroupName $(vmResouceGroupName)'
+      deploymentMode: 'Incremental'
+      deploymentOutputs: arm_outputs
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
+      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: $(rgName)
+      location: 'Canada Central'
+      templateLocation: "Linked artifact"
+      csmFileLink: '$(System.DefaultWorkingDirectory)/install_gluu.json'
+      overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
+      deploymentMode: 'Incremental'
+      deploymentOutputs: arm_outputs
       
 - job: update_setup_props
   dependsOn: setup_couchbase
@@ -79,8 +110,39 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(rgName)
       location: 'Canada Central'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/template.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/naeemhaq/sign-in-canada/master/gluu-az-template/simpleLinuxVM/parameters.json'
+      templateLocation: "Linked artifact"
+      csmFileLink: '$(System.DefaultWorkingDirectory)/template_.json'
+      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/parameters.json'
       overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)" -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
+      deploymentOutputs: arm_outputs
+      
+  - pwsh: $(System.DefaultWorkingDirectory)/parse_arm_deployment_output.ps1 -ArmOutputString '$(arm_outputs)' -MakeOutput -ErrorAction Stop
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
+      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'sic-common-rg'
+      location: 'Canada Central'
+      templateLocation: "Linked artifact"
+      csmFileLink: '$(System.DefaultWorkingDirectory)/keyvault_gluu.json'
+      overrideParameters: '-vmName $(vmName) -vmResouceGroupName $(vmResouceGroupName)'
+      deploymentMode: 'Incremental'
+      deploymentOutputs: arm_outputs
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
+      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: $(rgName)
+      location: 'Canada Central'
+      templateLocation: "Linked artifact"
+      csmFileLink: '$(System.DefaultWorkingDirectory)/install_gluu.json'
+      overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
+      deploymentMode: 'Incremental'
+      deploymentOutputs: arm_outputs
