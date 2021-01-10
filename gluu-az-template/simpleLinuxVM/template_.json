@@ -151,26 +151,14 @@
       "baseTime":{
           "type":"string",
           "defaultValue": "[utcNow('u')]"
-      },
-      "keyvaultName": {
-          "type": "string",
-          "defaultValue": "v-sic-j33t"
       }
     },
     "variables": {
-      "add1Hour": "[dateTimeAdd(parameters('baseTime'), 'PT2H')]",
       "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
       "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
       "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]",
       "osDiskType": "StandardSSD_LRS",
-      "secretName": "[concat(parameters('keyvaultName'), '/', 'StorageSaSToken')]",
-      "serviceSasFunctionValues": {
-        "canonicalizedResource": "[concat('/blob/', parameters('setuppyAccountName'), '/', parameters('containerName'))]",
-        "signedResource": "c",
-        "signedPermission": "rw",
-        "signedExpiry": "[variables('add1Hour')]"
-      },
       "linuxConfiguration": {
         "disablePasswordAuthentication": true,
         "ssh": {
@@ -187,17 +175,46 @@
      {
         "name": "grant-access",
         "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2019-10-01",
+        "apiVersion": "2017-05-10",
         "resourceGroup": "keyvault-test",
         "location": "East US",
-        "dependsOn": [
-          "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
-        ],
         "properties": {
             "mode": "Incremental",
             "template": {
                 "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                 "contentVersion": "1.0.0.0",
+                "parameters": {
+                    "setuppyAccountName": {
+                        "type": "string",
+                        "defaultValue": "siccommonstorage"
+                    },
+                    "setuppyRGName": {
+                        "type": "string",
+                        "defaultValue": "sic-common-rg"
+                    },
+                    "containerName": {
+                        "type": "string",
+                        "defaultValue": "sic-pipeline-artifacts-private"
+                    },
+                    "baseTime":{
+                        "type":"string",
+                        "defaultValue": "[utcNow('u')]"
+                    },
+                    "keyvaultName": {
+                        "type": "string",
+                        "defaultValue": "v-sic-j33t"
+                    }
+                },
+                "variables": {
+                    "add1Hour": "[dateTimeAdd(parameters('baseTime'), 'PT2H')]",
+                    "secretName": "[concat(parameters('keyvaultName'), '/', 'StorageSaSToken')]",
+                    "serviceSasFunctionValues": {
+                        "canonicalizedResource": "[concat('/blob/', parameters('setuppyAccountName'), '/', parameters('containerName'))]",
+                        "signedResource": "c",
+                        "signedPermission": "rw",
+                        "signedExpiry": "[variables('add1Hour')]"
+                    }
+                },
                 "resources": [
                     {
                         "type": "Microsoft.KeyVault/vaults/accessPolicies",
@@ -230,13 +247,16 @@
                                     }
                                 }
                             ]
-                        }
+                        },
+                        "dependsOn": [
+                          "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+                        ]
                     },
                     {
                         "apiVersion": "2016-10-01",
                         "type": "Microsoft.KeyVault/vaults/secrets",
                         "dependsOn": [
-                            "[concat('Microsoft.KeyVault/vaults/', parameters('keyvaultName'))]"
+                            "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
                         ],
                         "name": "[variables('secretName')]",
                         "properties": {
