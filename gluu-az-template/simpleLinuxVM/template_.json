@@ -188,7 +188,6 @@
         "name": "grant-access",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2019-10-01",
-        "subscriptionId": "a84771c4-d59c-4233-8c65-9e7c8e404eac",
         "resourceGroup": "keyvault-test",
         "location": "East US",
         "dependsOn": [
