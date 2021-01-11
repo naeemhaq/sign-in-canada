@@ -11,6 +11,10 @@ jobs:
   - group: couchbase
   
   steps:
+
+  - script: |
+      check working directory 
+      ls -al $(System.DefaultWorkingDirectory)/
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       deploymentScope: 'Resource Group'
@@ -20,8 +24,8 @@ jobs:
       resourceGroupName: $(rgName)
       location: 'Canada Central'
       templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/template_.json'
-      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/parameters.json'
+      csmFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/template_.json'
+      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/parameters.json'
       overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -41,7 +45,7 @@ jobs:
       resourceGroupName: 'sic-common-rg'
       location: 'Canada Central'
       templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/keyvault_gluu.json'
+      csmFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/keyvault_gluu.json'
       overrideParameters: '-vmName $(vmName) -vmResouceGroupName $(vmResouceGroupName)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -55,7 +59,7 @@ jobs:
       resourceGroupName: $(rgName)
       location: 'Canada Central'
       templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/install_gluu.json'
+      csmFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/install_gluu.json'
       overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -115,8 +119,8 @@ jobs:
       resourceGroupName: $(rgName)
       location: 'Canada Central'
       templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/template_.json'
-      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/parameters.json'
+      csmFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/template_.json'
+      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/parameters.json'
       overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)" -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -136,7 +140,7 @@ jobs:
       resourceGroupName: 'sic-common-rg'
       location: 'Canada Central'
       templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/keyvault_gluu.json'
+      csmFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/keyvault_gluu.json'
       overrideParameters: '-vmName $(vmName) -vmResouceGroupName $(vmResouceGroupName)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -150,7 +154,7 @@ jobs:
       resourceGroupName: $(rgName)
       location: 'Canada Central'
       templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/install_gluu.json'
+      csmFileLink: '$(System.DefaultWorkingDirectory)/simpleLinuxVM/install_gluu.json'
       overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
