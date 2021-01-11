@@ -338,7 +338,7 @@
       }
     ],
     "outputs": {
-      "vmName": {
+      "createdVmName": {
           "type": "string",
           "value": "[parameters('vmName')]"
       },
