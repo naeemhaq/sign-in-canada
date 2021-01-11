@@ -23,9 +23,8 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(rgName)
       location: 'Canada Central'
-      templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/template_.json'
-      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/parameters.json'
+      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/template_.json'
+      csmParametersFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/parameters.json'
       overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -44,8 +43,7 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: 'sic-common-rg'
       location: 'Canada Central'
-      templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
+      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
       overrideParameters: '-vmName $(vmName) -vmResouceGroupName $(vmResouceGroupName)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -58,8 +56,7 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(rgName)
       location: 'Canada Central'
-      templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/install_gluu.json'
+      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/install_gluu.json'
       overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -118,9 +115,8 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(rgName)
       location: 'Canada Central'
-      templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/template_.json'
-      csmParametersFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/parameters.json'
+      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/template_.json'
+      csmParametersFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/parameters.json'
       overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)" -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -139,8 +135,7 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: 'sic-common-rg'
       location: 'Canada Central'
-      templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
+      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
       overrideParameters: '-vmName $(vmName) -vmResouceGroupName $(vmResouceGroupName)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
@@ -153,8 +148,7 @@ jobs:
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(rgName)
       location: 'Canada Central'
-      templateLocation: "Linked artifact"
-      csmFileLink: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/install_gluu.json'
+      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/install_gluu.json'
       overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
