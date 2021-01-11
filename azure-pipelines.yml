@@ -26,7 +26,11 @@ jobs:
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
       
-  - pwsh: $(System.DefaultWorkingDirectory)/parse_arm_deployment_output.ps1 -ArmOutputString '$(arm_outputs)' -MakeOutput -ErrorAction Stop
+  - task: PowerShell@2
+    inputs:
+      filePath: '$(System.DefaultWorkingDirectory)/parse_arm_deployment_output.ps1'
+      arguments: '-ArmOutputString ''$(arm_outputs)'' -MakeOutput'
+      failOnStderr: true
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -117,7 +121,11 @@ jobs:
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
       
-  - pwsh: $(System.DefaultWorkingDirectory)/parse_arm_deployment_output.ps1 -ArmOutputString '$(arm_outputs)' -MakeOutput -ErrorAction Stop
+  - task: PowerShell@2
+    inputs:
+      filePath: '$(System.DefaultWorkingDirectory)/parse_arm_deployment_output.ps1'
+      arguments: '-ArmOutputString ''$(arm_outputs)'' -MakeOutput'
+      failOnStderr: true
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
