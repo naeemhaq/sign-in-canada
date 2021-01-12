@@ -50,7 +50,6 @@ jobs:
       csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
       overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(rgName)"'
       deploymentMode: 'Incremental'
-      deploymentOutputs: arm_outputs
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
