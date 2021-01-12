@@ -13,10 +13,17 @@
         "type": "string",
         "defaultValue": "sh install.sh"
       },
-        "vmName": {
-            "type": "string",
-            "defaultValue": "vmName"
+      "vmName": {
+        "type": "string",
+        "defaultValue": "vmName"
+      },
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]",
+        "metadata": {
+        "description": "Location for all resources."
         }
+      }
     },
     "variables": {
     },
