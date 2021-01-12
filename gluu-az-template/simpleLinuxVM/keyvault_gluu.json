@@ -20,7 +20,7 @@
         },
         "keyvaultName": {
             "type": "string",
-            "defaultValue": "v-sic-j33t"
+            "defaultValue": "kv-sic-j33t"
         },
         "vmName": {
             "type": "string",
