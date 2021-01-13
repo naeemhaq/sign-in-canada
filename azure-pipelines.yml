@@ -105,11 +105,13 @@ jobs:
       inlineScript: 'az storage blob upload --account-name gluuccrgdiag --container-name gluu-install --file setup.properties --name setup.properties'
     displayName: 'Uploading to blob'
 
+
 - job: setup_gluu_server 
   dependsOn: update_setup_props
   variables: 
   - group: naeem-gluu
   steps:
+  
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       deploymentScope: 'Resource Group'
@@ -120,16 +122,10 @@ jobs:
       location: 'Canada Central'
       csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/template_.json'
       csmParametersFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/parameters.json'
-      overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)" -homeTrafficRule $(homeTrafficRule)'
+      overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -homeTrafficRule $(homeTrafficRule)'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
       
-  - task: PowerShell@2
-    inputs:
-      filePath: '$(System.DefaultWorkingDirectory)/gluu-az-template/parse_arm_deployment_output.ps1'
-      arguments: '-ArmOutputString ''$(arm_outputs)'' -MakeOutput'
-      failOnStderr: true
-
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       deploymentScope: 'Resource Group'
@@ -139,9 +135,8 @@ jobs:
       resourceGroupName: 'keyvault-test'
       location: 'Canada Central'
       csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
-      overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(vmResouceGroupName)"'
+      overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(rgName)"'
       deploymentMode: 'Incremental'
-      deploymentOutputs: arm_outputs
 
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
@@ -155,3 +150,4 @@ jobs:
       overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
       deploymentMode: 'Incremental'
       deploymentOutputs: arm_outputs
+  

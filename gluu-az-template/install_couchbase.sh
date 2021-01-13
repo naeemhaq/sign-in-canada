@@ -41,7 +41,7 @@ sleep 30
 
 echo "setup cluster"
 curl -v -X POST http://localhost:8091/settings/indexes -d 'storageMode=memory_optimized'
-curl -v -X POST http://localhost:8091/pools/default -d memoryQuota=2048 -d indexMemoryQuota=512
+curl -v -X POST http://localhost:8091/pools/default -d memoryQuota=4096 -d indexMemoryQuota=2048
 curl -v http://localhost:8091/node/controller/setupServices -d services=kv%2cn1ql%2Cindex
 curl -v http://localhost:8091/settings/web -d port=8091 -d username=Administrator -d password=${1}
 
