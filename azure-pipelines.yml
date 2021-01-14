@@ -1,6 +1,6 @@
 # Pipeline to setup Gluu and Couchbase VMs and setup access policies on the existing keyvault
 trigger: 
-- pipeline-variable-test
+- feature/pipeline-variable-test
  
 pool: 
   vmImage: 'ubuntu-latest'
