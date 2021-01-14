@@ -351,7 +351,7 @@
         "type": "object"
       },
       "pvtIPAddress": {
-        "value": "[reference(concat('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))).ipConfigurations[0].properties.privateIPAddress]",  
+        "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))).ipConfigurations[0].properties.privateIPAddress]",  
         "type": "string" 
       } 
     }
