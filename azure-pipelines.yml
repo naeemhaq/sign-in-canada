@@ -135,7 +135,7 @@ jobs:
       resourceGroupName: 'keyvault-test'
       location: 'Canada Central'
       csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
-      overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(rgName)"'
+      overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(rgName)" -storageSaSToken "gluuStorageSaSToken"'
       deploymentMode: 'Incremental'
 
   - task: AzureResourceManagerTemplateDeployment@3

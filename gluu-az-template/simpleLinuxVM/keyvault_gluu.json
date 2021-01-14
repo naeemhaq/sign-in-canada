@@ -29,11 +29,15 @@
         "vmResouceGroupName": {
             "type": "string",
             "defaultValue": "[resourceGroup().name]"
-        }       
+        },
+        "storageSaSToken": {
+            "type": "string",
+            "defaultValue": "StorageSaSToken"
+        }      
     },
     "variables": {
         "add1Hour": "[dateTimeAdd(parameters('baseTime'), 'PT2H')]",
-        "secretName": "[concat(parameters('keyvaultName'), '/', 'StorageSaSToken')]",
+        "secretName": "[concat(parameters('keyvaultName'), '/', parameters('storageSaSToken'))]",
         "setuppropStorage": "[resourceId(parameters('setuppyRGName'), 'Microsoft.Storage/storageAccounts', parameters('setuppyAccountName'))]",
         "serviceSasFunctionValues": {
             "canonicalizedResource": "[concat('/blob/', parameters('setuppyAccountName'), '/', parameters('containerName'))]",

@@ -63,7 +63,7 @@ echo $RGNAME
 
 KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
 
-SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/StorageSaSToken?api-version=${API_VER} | jq -r '.value')
+SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/gluuStorageSaSToken?api-version=${API_VER} | jq -r '.value')
 echo "SASToken: ${SASTOKEN}"
 wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?${SASTOKEN}"
 
