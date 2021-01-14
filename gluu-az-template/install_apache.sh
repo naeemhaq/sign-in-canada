@@ -58,11 +58,11 @@ API_VER='7.0'
 echo "Obtain an access token and upload cert file"
 TOKEN=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true | jq -r '.access_token')
 echo "token: ${TOKEN}"
-RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2020-06-01&format=text' -H Metadata:true)
-echo $RGNAME
+#RGNAME=$(curl -s 'http://169.254.169.254/metadata/instance/compute/resourceGroupName?api-version=2020-06-01&format=text' -H Metadata:true)
+#echo $RGNAME
+#KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
 
-KEYVAULT="https://${RGNAME}-keyvault.vault.azure.net"
-
+KEYVAULT="https://kv-sic-j33t.vault.azure.net"
 SASTOKEN=$(curl -s -H "Authorization: Bearer ${TOKEN}" ${KEYVAULT}/secrets/gluuStorageSaSToken?api-version=${API_VER} | jq -r '.value')
 echo "SASToken: ${SASTOKEN}"
 wget -O setup.properties "https://gluuccrgdiag.blob.core.windows.net/gluu-install/setup.properties?${SASTOKEN}"
