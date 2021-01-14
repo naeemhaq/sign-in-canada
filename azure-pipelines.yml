@@ -1,6 +1,6 @@
 # Pipeline to setup Gluu and Couchbase VMs and setup access policies on the existing keyvault
 trigger: 
-- master
+- pipeline-variable-test
  
 pool: 
   vmImage: 'ubuntu-latest'
@@ -34,36 +34,23 @@ jobs:
       filePath: '$(System.DefaultWorkingDirectory)/gluu-az-template/parse_arm_deployment_output.ps1'
       arguments: '-ArmOutputString ''$(arm_outputs)'' -MakeOutput'
       failOnStderr: true
-  
-  - script: |
-      echo "vmName is " $(createdVmName)
-      echo "resourceGroup from variable " $(vmResouceGroupName) 
-
-  - task: AzureResourceManagerTemplateDeployment@3
+    
+  - task: PowerShell@2
     inputs:
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
-      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: 'keyvault-test'
-      location: 'Canada Central'
-      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
-      overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(rgName)"'
-      deploymentMode: 'Incremental'
-
-  - task: AzureResourceManagerTemplateDeployment@3
-    inputs:
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
-      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: $(rgName)
-      location: 'Canada Central'
-      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/install_gluu.json'
-      overrideParameters: '-vmName $(vmName) -_artifactsLocation "$(_artifactsLocation)" -commandToExec "$(commandToExec)"'
-      deploymentMode: 'Incremental'
-      deploymentOutputs: arm_outputs
-      
+      targetType: 'inline'
+      script: |
+        $armOutputObj = $env:arm_outputs | convertfrom-json
+        $armOutputObj.PSObject.Properties | ForEach-Object {
+            $keyname = $_.Name
+            $value = $_.Value.value
+            ## Creates a standard pipeline variable
+            Write-Output "##vso[task.setvariable variable=$keyName;]$value"
+            
+            ## Creates an output variable
+            Write-Output "##vso[task.setvariable variable=$keyName;isOutput=true]$value"
+            Write-Host "##vso[task.setvariable variable=$keyName;]$value"
+        }  
+          
 - job: update_setup_props
   dependsOn: setup_couchbase
   variables:
@@ -79,7 +66,6 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az vm show -g $(rgName) -n $(vmName) -d --query privateIps --out tsv > tmpfile1
-        az storage blob download --account-name gluuccrgdiag --container-name gluu-install --file setup.properties --name setup.properties
     displayName: 'Couchbase IP and download setup.props blob'
 
   - script: |
@@ -87,57 +73,18 @@ jobs:
       pvtIPadd=$(cat tmpfile1)
       echo $pvtIPadd
       ls -al 
-      sed -i "/couchbase_hostname/ s/.*/couchbase_hostname=$pvtIPadd/g" setup.properties
-      cat setup.properties |grep couchbase
       echo $(commandToExec) | cut -d ' ' -f 3 > tmpfile2 && cbpass=$(cat tmpfile2) && echo $cbpass
-      echo "running sed command"
-      sed -i "/cb_password/ s/.*/cb_password=$cbpass/g" setup.properties
-      echo "spit out password"
-      cat setup.properties |grep cb_password 
+      
       echo "the task is done"   
-    displayName: 'Update the setup.properties'
-
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: 'az storage blob upload --account-name gluuccrgdiag --container-name gluu-install --file setup.properties --name setup.properties'
-    displayName: 'Uploading to blob'
+    displayName: 'Set Variable of couchbase IP'
 
 
 - job: setup_gluu_server 
   dependsOn: update_setup_props
   variables: 
-  - group: naeem-gluu
+  - group: naeem-gluu2
   steps:
   
-  - task: AzureResourceManagerTemplateDeployment@3
-    inputs:
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
-      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: $(rgName)
-      location: 'Canada Central'
-      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/template_.json'
-      csmParametersFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/parameters.json'
-      overrideParameters: '-adminUsername $(adminUsername) -adminPasswordOrKey "$(adminPasswordOrKey)" -dnsLabelPrefix $(vmName) -networkSecurityGroupName $(networkSecurityGroupName) -OSVersion $(OSVersion) -storageName $(storageName) -subnetName $(subnetName) -virtualNetworkName $(virtualNetworkName) -vmName $(vmName) -homeTrafficRule $(homeTrafficRule)'
-      deploymentMode: 'Incremental'
-      deploymentOutputs: arm_outputs
-      
-  - task: AzureResourceManagerTemplateDeployment@3
-    inputs:
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: 'Azure subscription 1(a84771c4-d59c-4233-8c65-9e7c8e404eac)'
-      subscriptionId: 'a84771c4-d59c-4233-8c65-9e7c8e404eac'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: 'keyvault-test'
-      location: 'Canada Central'
-      csmFile: '$(System.DefaultWorkingDirectory)/gluu-az-template/simpleLinuxVM/keyvault_gluu.json'
-      overrideParameters: '-vmName $(vmName) -vmResouceGroupName "$(rgName)" -storageSaSToken "gluuStorageSaSToken"'
-      deploymentMode: 'Incremental'
-
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
       deploymentScope: 'Resource Group'

@@ -345,6 +345,14 @@
       "vmResouceGroupName": {
       "type" : "string",
       "value": "[resourceGroup().name]"
-      }
+      },
+      "networkInterface":{
+        "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName')),'2016-09-01')]",
+        "type": "object"
+      },
+      "pvtIPAddress": {
+        "value": "[reference(concat('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))).ipConfigurations[0].properties.privateIPAddress]",  
+        "type": "string" 
+      } 
     }
   }
