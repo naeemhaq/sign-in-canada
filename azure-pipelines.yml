@@ -50,7 +50,28 @@ jobs:
             Write-Output "##vso[task.setvariable variable=$keyName;isOutput=true]$value"
             Write-Host "##vso[task.setvariable variable=$keyName;]$value"
         }  
-          
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/build/definitions/$($env:SYSTEM_DEFINITIONID)?api-version=5.0"
+                Write-Host "URL: $url"
+                $pipeline = Invoke-RestMethod -Uri $url -Headers @{
+                    Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+                }
+                Write-Host "Pipeline = $($pipeline | ConvertTo-Json -Depth 100)"
+        # Update an existing variable named cb_host to its new value 1035
+          $pipeline.variables.cb_host.value = "1035"
+
+          ####****************** update the modified object **************************
+          $json = @($pipeline) | ConvertTo-Json -Depth 99
+          $updatedef = Invoke-RestMethod -Uri $url -Method Put -Body $json -ContentType "application/json" -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
+          write-host "==========================================================" 
+          Write-host "The value of Varialbe 'cb_host' is updated to" $updatedef.variables.v1030.value
+          write-host "=========================================================="
+
+
 - job: update_setup_props
   dependsOn: setup_couchbase
   variables:
