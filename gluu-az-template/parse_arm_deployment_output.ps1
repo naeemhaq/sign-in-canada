@@ -24,14 +24,17 @@ $armOutputObj.PSObject.Properties | ForEach-Object {
     } elseif ($type -ne "string") {
         throw "Type '$type' is not supported for '$keyname'"
     } else {
+        Write-Output = "not yet stored $_.Value.value"
         $value = $_.Value.value
+        Write-Output = "value is stored in $value"
     }
         
     if ($MakeOutput.IsPresent) {
         $vsoAttribs += 'isOutput=true'
     }
-
+    $vsoAttribs += 'isOutput=true'
     $attribString = $vsoAttribs -join ';'
     $var = "##vso[$attribString]$value"
+    Write-Output = $var
     Write-Output -InputObject $var
 }
