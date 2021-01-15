@@ -39,7 +39,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        $armOutputObj = $env:arm_outputs | convertfrom-json
+        $armOutputObj = $arm_outputs | convertfrom-json
         $armOutputObj.PSObject.Properties | ForEach-Object {
             $keyname = $_.Name
             $value = $_.Value.value
