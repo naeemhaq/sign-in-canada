@@ -6,7 +6,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 TARBALL="SIC-AP-0.0.223"
-KEYVAULT="https://kv-sic-dev-00.vault.azure.net"
+KEYVAULT="https://kv-sic-j33t.vault.azure.net"
 
 # set the hostname
 echo "Setting the hostname"
