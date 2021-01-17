@@ -35,8 +35,7 @@ $armOutputObj.PSObject.Properties | ForEach-Object {
     }
 
     Write-Host $vsoAttribs
-    #$attribString = $vsoAttribs -join ';'
+    $attribString = $vsoAttribs -join ';'
     $var = "##vso[$attribString]$value"
-    Write-Host $var
     Write-Output -InputObject $var
 }
