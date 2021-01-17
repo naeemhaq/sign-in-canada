@@ -37,7 +37,6 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        Write-Host "private IP address from previous task: $($(pvtIPAddress))"
         Write-Host "private IP address from previous task: $(pvtIPAddress)"
         Write-Host "private IP address from previous task: " $(pvtIPAddress)
         
