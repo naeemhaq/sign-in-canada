@@ -31,7 +31,7 @@ $armOutputObj.PSObject.Properties | ForEach-Object {
     }
 
     if ($MakeOutput.IsPresent) {
-        $vsoAttribs += ';isOutput=true'
+        $vsoAttribs += 'isOutput=true'
     }
 
     Write-Host $vsoAttribs
