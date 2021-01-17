@@ -76,7 +76,7 @@ jobs:
 - job: setup_gluu_server 
   dependsOn: update_setup_props
   variables: 
-  - group: naeem-gluu2
+  - group: naeem-gluu
   steps:
   
   - task: AzureResourceManagerTemplateDeployment@3
