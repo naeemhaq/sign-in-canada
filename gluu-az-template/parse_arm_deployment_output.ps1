@@ -16,7 +16,7 @@ $armOutputObj.PSObject.Properties | ForEach-Object {
     $type = ($_.value.type).ToLower()
     $keyname = $_.Name
     $vsoAttribs = @("task.setvariable variable=$keyName")
-    Write-Output = $vsoAttribs
+    Write-Output $vsoAttribs
 
     if ($type -eq "array") {
         $value = $_.Value.value.name -join ',' ## All array variables will come out as comma-separated strings
@@ -25,24 +25,17 @@ $armOutputObj.PSObject.Properties | ForEach-Object {
     } elseif ($type -ne "string") {
         throw "Type '$type' is not supported for '$keyname'"
     } else {
-        Write-Output = "not yet stored $_.Value.value"
+        Write-Host  "not yet stored $_.Value.value"
         $value = $_.Value.value
-        Write-Output = "value is stored in $value"
+        Write-Host "value is stored in $value"
     }
-    Write-Output = " Before Markoutput"
+
     if ($MakeOutput.IsPresent) {
         $vsoAttribs += 'isOutput=true'
     }
-    Write-Output = "after the if check of markoutput"
-    $vsoAttribs += 'isOutput=true'
-    Write-Output = $vsoAttribs
+    Write-Host $vsoAttribs
     $attribString = $vsoAttribs -join ';'
-
-    Write-Output = $attribString
-
     $var = "##vso[$attribString]$value"
-    
-    Write-Output = $var
-    
+    Write-Host $var
     Write-Output -InputObject $var
 }
