@@ -159,7 +159,7 @@
         "name": "[variables('networkInterfaceName')]",
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[resourceId('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
+          "[resourceId('Microsoft.Resources/resourceGroups/network-cc-rg/providers/Microsoft.Network/networkSecurityGroups/', 'common-nsg')]",
           "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
           "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
         ],
