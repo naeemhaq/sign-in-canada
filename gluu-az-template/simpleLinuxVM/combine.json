@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "vmName": {
-        "type": "string",
-        "defaultValue": "simpleLinuxVM",
-        "metadata": {
-          "description": "The name of you Virtual Machine."
-        }
+        "type": "array",
+        "defaultValue": [
+            "couchbase",
+            "gluu"
+        ]
       },
       "adminUsername": {
         "type": "string",
@@ -40,11 +40,10 @@
         }
       },
       "OSVersion": {
-        "type": "string",
-        "defaultValue": "7_9",
-        "allowedValues": [
-          "7_9",
-          "8.0"
+        "type": "array",
+        "defaultValue": [
+            "7_9",
+            "8.0"
         ],
         "metadata": {
           "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
@@ -62,27 +61,6 @@
         "defaultValue": "Standard_A2_v2",
         "metadata": {
           "description": "The size of the VM"
-        }
-      },
-      "virtualNetworkName": {
-        "type": "string",
-        "defaultValue": "vNet",
-        "metadata": {
-          "description": "Name of the VNET"
-        }
-      },
-      "subnetName": {
-        "type": "string",
-        "defaultValue": "Subnet",
-        "metadata": {
-          "description": "Name of the subnet in the virtual network"
-        }
-      },
-      "networkSecurityGroupName": {
-        "type": "string",
-        "defaultValue": "SecGroupNet",
-        "metadata": {
-          "description": "Name of the Network Security Group"
         }
       },
       "autoShutdownNotificationEmail": {
@@ -109,10 +87,6 @@
         "type": "string",
         "defaultValue": "Eastern Standard Time"
       },
-      "storageName":{
-        "type": "string",
-        "defaultValue": "pipelineStorage"
-      },
       "subnetAddressPrefix":{
         "type":"string",
         "defaultValue": "10.0.1.0/24"
@@ -120,33 +94,34 @@
       "addressPrefix":{
         "type": "string",
         "defaultValue": "10.0.1.0/24"
-      },
-      "homeTrafficRule": {
-        "type": "string",
-        "defaultValue": "174.112.28.92/32"
       }
     },
     "variables": {
-      "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
-      "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
-      "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
-      "osDiskType": "StandardSSD_LRS",
-      "linuxConfiguration": {
-        "disablePasswordAuthentication": true,
-        "ssh": {
-          "publicKeys": [
-            {
-              "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
-              "keyData": "[parameters('adminPasswordOrKey')]"
+        "storageName": "[toLower( concat( resourceGroup().name,'st') )]",
+        "nsgID": "[resourceId('network-cc-rg', 'Microsoft.Network/networkSecurityGroups/common-nsg')]",
+        "nsgName": "[resourceId('network-cc-rg', 'Microsoft.Network/networkSecurityGroups/common-nsg')]",
+        "vnetName": "[toLower( concat( resourceGroup().name,'vnet') )]",
+        "subnetName": "[toLower( concat(resourceGroup().name, 'subnet' ) )]",
+        "publicIpAddressName": "[concat(parameters('vmName'), 'PublicIP' )]",
+        "networkInterfaceName": "[concat(parameters('vmName'),'NetInt')]",
+        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]",
+        "osDiskType": "StandardSSD_LRS",
+        "linuxConfiguration": {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+            "publicKeys": [
+                {
+                "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                "keyData": "[parameters('adminPasswordOrKey')]"
+                }
+            ]
             }
-          ]
         }
-      }
     },
     "resources": [
       {
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[parameters('storageName')]",
+        "name": "[variables('storageName')]",
         "apiVersion": "2015-06-15",
         "location": "[parameters('location')]",
         "properties": {
@@ -156,11 +131,11 @@
       {
         "type": "Microsoft.Network/networkInterfaces",
         "apiVersion": "2020-05-01",
-        "name": "[variables('networkInterfaceName')]",
+        "name": "[concat(variables('networkInterfaceName'),copyIndex(1))]",
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
-          "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
+          "[resourceId('Microsoft.Network/virtualNetworks/', concat(variables('vnetName'),copyIndex(1)))]",
+          "[resourceId('Microsoft.Network/publicIpAddresses/', concat(variables('publicIpAddressName'),copyIndex(1)))]"
         ],
         "properties": {
           "ipConfigurations": [
@@ -172,58 +147,20 @@
                 },
                 "privateIPAllocationMethod": "Dynamic",
                 "publicIpAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName'),copyIndex(1)))]"
                 }
               }
             }
           ],
           "networkSecurityGroup": {
-            "id": "[resourceId('network-cc-rg', 'Microsoft.Network/networkSecurityGroups/common-nsg')]"
+            "id": "[variables('nsgID')]"
           }
-        }
-      },
-      {
-        "type": "Microsoft.Network/networkSecurityGroups",
-        "apiVersion": "2020-05-01",
-        "name": "[parameters('networkSecurityGroupName')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "securityRules": [
-            {
-              "name": "Internet",
-              "properties": {
-                "priority": 1000,
-                "protocol": "TCP",
-                "access": "Allow",
-                "direction": "Inbound",
-                "sourceAddressPrefix": "*",
-                "sourcePortRange": "*",
-                "destinationAddressPrefix": "*",
-                "destinationPortRanges": ["443","80"]
-              }
-            },
-            {
-              "name": "home-traffic",
-              "properties": {
-                "priority": 1100,
-                "protocol": "TCP",
-                "access": "Allow",
-                "direction": "Inbound",
-                "sourceApplicationSecurityGroups": [],
-                "destinationApplicationSecurityGroups": [],
-                "sourceAddressPrefix": "[parameters('homeTrafficRule')]",
-                "sourcePortRange": "*",
-                "destinationAddressPrefix": "*",
-                "destinationPortRange": "*"
-              }
-            }
-          ]
         }
       },
       {
         "type": "Microsoft.Network/virtualNetworks",
         "apiVersion": "2020-05-01",
-        "name": "[parameters('virtualNetworkName')]",
+        "name": "[variables('vnetName')]",
         "location": "[parameters('location')]",
         "properties": {
           "addressSpace": {
@@ -233,7 +170,7 @@
           },
           "subnets": [
             {
-              "name": "[parameters('subnetName')]",
+              "name": "[variables('subnetName')]",
               "properties": {
                 "addressPrefix": "[parameters('subnetAddressPrefix')]",
                 "privateEndpointNetworkPolicies": "Enabled",
@@ -246,7 +183,7 @@
       {
         "type": "Microsoft.Network/publicIpAddresses",
         "apiVersion": "2020-05-01",
-        "name": "[variables('publicIpAddressName')]",
+        "name": "[concat(variables('publicIpAddressName'),copyIndex(1))]",
         "location": "[parameters('location')]",
         "sku": {
           "name": "Basic",
@@ -256,7 +193,7 @@
           "publicIpAllocationMethod": "Dynamic",
           "publicIPAddressVersion": "IPv4",
           "dnsSettings": {
-            "domainNameLabel": "[parameters('dnsLabelPrefix')]"
+            "domainNameLabel": "[concat(parameters('dnsLabelPrefix'),copyIndex(1))]"
           },
           "idleTimeoutInMinutes": 4
         }
@@ -264,10 +201,14 @@
       {
         "type": "Microsoft.Compute/virtualMachines",
         "apiVersion": "2019-07-01",
-        "name": "[parameters('vmName')]",
+        "name": "[parameters('vmName')[copyIndex()]]",
+         "copy": {
+            "name": "vmcopy",
+            "count": "[length(parameters('vmName'))]"
+        },
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[resourceId('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]"
+          "[resourceId('Microsoft.Network/networkInterfaces/', concat(variables('networkInterfaceName'),copyIndex(1)))]"
         ],
         "properties": {
           "hardwareProfile": {
@@ -283,19 +224,23 @@
             "imageReference": {
               "publisher": "OpenLogic",
               "offer": "CentOS",
-              "sku": "[parameters('OSVersion')]",
+              "sku": "[parameters('OSVersion')[copyIndex()]]",
+                "copy": {
+                    "name": "skucopy",
+                    "count": "[length(parameters('OSVersion'))]"
+                },
               "version": "latest"
             }
           },
           "networkProfile": {
             "networkInterfaces": [
               {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('networkInterfaceName'),copyIndex(1)))]"
               }
             ]
           },
           "osProfile": {
-            "computerName": "[parameters('vmName')]",
+            "computerName": "[parameters('vmName')[copyIndex()]]",
             "adminUsername": "[parameters('adminUsername')]",
             "adminPassword": "[parameters('adminPasswordOrKey')]",
             "linuxConfiguration": "[if(equals(parameters('authenticationType'), 'password'), json('null'), variables('linuxConfiguration'))]"
@@ -303,7 +248,7 @@
           "diagnosticsProfile": {
             "bootDiagnostics": {
                 "enabled": true,
-                "storageUri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/')]"
+                "storageUri": "[concat('https://', variables('storageName'), '.blob.core.windows.net/')]"
             }
           }
         },
@@ -312,12 +257,12 @@
         }
       },
       {
-        "name": "[concat('shutdown-computevm-', parameters('vmName'))]",
+        "name": "[concat('shutdown-computevm-', parameters('vmName')[copyIndex()])]",
         "type": "Microsoft.DevTestLab/schedules",
         "apiVersion": "2018-09-15",
         "location": "[parameters('location')]",
         "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName')[copyIndex()])]"
         ],
         "properties": {
           "status": "[parameters('autoShutdownStatus')]",
@@ -326,7 +271,7 @@
             "time": "[parameters('autoShutdownTime')]"
           },
           "timeZoneId": "[parameters('autoShutdownTimeZone')]",
-          "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]",
+          "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')[copyIndex()])]",
           "notificationSettings": {
             "status": "[parameters('autoShutdownNotificationStatus')]",
             "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
@@ -339,14 +284,14 @@
     "outputs": {
       "createdVmName": {
           "type": "string",
-          "value": "[parameters('vmName')]"
+          "value": "[parameters('vmName')[copyIndex()]]"
       },
       "vmResouceGroupName": {
       "type" : "string",
       "value": "[resourceGroup().name]"
       },
       "pvtIPAddress": {
-        "value": "[reference(concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))).ipConfigurations[0].properties.privateIPAddress]",  
+        "value": "[reference(concat('Microsoft.Network/networkInterfaces/', concat(variables('networkInterfaceName'),copyIndex(1)))).ipConfigurations[0].properties.privateIPAddress]",  
         "type": "string" 
       }
     }
